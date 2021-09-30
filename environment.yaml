@@ -1,0 +1,13 @@
+name: geneEd
+channels:
+    - anaconda
+    - conda-forge
+dependencies:
+    - python=3.8
+    - bs4
+    - lxml
+    - flask
+    - mysql
+    - pip
+    - pip:
+        - entrezpy
