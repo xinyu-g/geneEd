@@ -5,6 +5,7 @@ import os
 import sys
 import json
 import xml.etree.ElementTree
+from pathlib import Path
 
 
 
@@ -14,9 +15,6 @@ import entrezpy.base.analyzer
 from bs4 import BeautifulSoup
 
 class GeneRecord:
-	"""Simple data class to store individual Pubmed records. Individual authors will
-	be stored as dict('lname':last_name, 'fname': first_name) in authors.
-	Citations as string elements in the list citations. """
 
 	def __init__(self):
 		self.geneId = None
@@ -30,17 +28,8 @@ class GeneRecord:
 
 
 
-
-
 class GeneResult(entrezpy.base.result.EutilsResult):
-	"""Derive class entrezpy.base.result.EutilsResult to store Pubmed queries.
-	Individual Pubmed records are implemented in :class:`PubmedRecord` and
-	stored in :ivar:`pubmed_records`.
-
-	:param response: inspected response from :class:`PubmedAnalyzer`
-	:param request: the request for the current response
-	:ivar dict pubmed_records: storing PubmedRecord instances"""
-
+	
 	def __init__(self, response, request):
 		super().__init__(request.eutil, request.query_id, request.db)
 		self.gene_records = {}
@@ -82,34 +71,23 @@ class GeneResult(entrezpy.base.result.EutilsResult):
 
 
 class GeneAnalyzer(entrezpy.base.analyzer.EutilsAnalyzer):
-	"""Derived class of :class:`entrezpy.base.analyzer.EutilsAnalyzer` to analyze and
-	parse PubMed responses and requests."""
+	"""Derived class of :class:`entrezpy.base.analyzer.EutilsAnalyzer`"""
 
 	def __init__(self):
 		super().__init__()
 
 	def init_result(self, response, request):
-		"""Implemented virtual method :meth:`entrezpy.base.analyzer.init_result`.
-		This method initiate a result instance when analyzing the first response"""
+		
 		if self.result is None:
 			self.result = GeneResult(response, request)
 
 	def analyze_error(self, response, request):
-		"""Implement virtual method :meth:`entrezpy.base.analyzer.analyze_error`. Since
-		we expect XML errors, just print the error to STDOUT for
-		logging/debugging."""
+		
 		print(json.dumps({__name__:{'Response': {'dump' : request.dump(),
 													'error' : response.getvalue()}}}))
 
 	def analyze_result(self, response, request):
-		"""Implement virtual method :meth:`entrezpy.base.analyzer.analyze_result`.
-		Parse PubMed  XML line by line to extract authors and citations.
-		xml.etree.ElementTree.iterparse
-		(https://docs.python.org/3/library/xml.etree.elementtree.html#xml.etree.ElementTree.iterparse)
-		reads the XML file incrementally. Each  <PubmedArticle> is cleared after processing.
-
-		..note::  Adjust this method to include more/different tags to extract.
-					Remember to adjust :class:`.PubmedRecord` as well."""
+		
 		self.init_result(response, request)
 		
 		soup = BeautifulSoup(response, 'xml')
@@ -144,50 +122,34 @@ class SeqRecord:
 	
 
 class SeqResult(entrezpy.base.result.EutilsResult):
-	"""Derive class entrezpy.base.result.EutilsResult to store Pubmed queries.
-	Individual Pubmed records are implemented in :class:`PubmedRecord` and
-	stored in :ivar:`pubmed_records`.
-
-	:param response: inspected response from :class:`PubmedAnalyzer`
-	:param request: the request for the current response
-	:ivar dict pubmed_records: storing PubmedRecord instances"""
 
 	def __init__(self, response, request):
 		super().__init__(request.eutil, request.query_id, request.db)
 		self.seq_records = {}
 
 	def size(self):
-		"""Implement virtual method :meth:`entrezpy.base.result.EutilsResult.size`
-		returning the number of stored data records."""
+		
 		return len(self.seq_records)
 
 	def isEmpty(self):
-		"""Implement virtual method :meth:`entrezpy.base.result.EutilsResult.isEmpty`
-		to query if any records have been stored at all."""
+		
 		if not self.seq_records:
 			return True
 		return False
 
 	def get_link_parameter(self, reqnum=0):
-		"""Implement virtual method :meth:`entrezpy.base.result.EutilsResult.get_link_parameter`.
-		Fetching a pubmed record has no intrinsic elink capabilities and therefore
-		should inform users about this."""
+		
 		print("{} has no elink capability".format(self))
 		return {}
 
 	def dump(self):
-		"""Implement virtual method :meth:`entrezpy.base.result.EutilsResult.dump`.
-
-		:return: instance attributes
-		:rtype: dict
-		"""
+		
 		return {}
 		return {self:{'dump':{'seq_records':[x for x in self.seq_records],
 									'query_id': self.query_id, 'db':self.db,
 									'eutil':self.function}}}
 	def add_seq_record(self, seq_record):
-		"""The only non-virtual and therefore PubmedResult-specific method to handle
-		adding new data records"""
+		
 		self.seq_records[seq_record.sid] = seq_record
 
 class SeqAnalyzer(entrezpy.base.analyzer.EutilsAnalyzer):
@@ -304,59 +266,68 @@ class proteinAnalyzer(entrezpy.base.analyzer.EutilsAnalyzer):
 			ProteinRec.pname = t[0].text
 		self.result.add_protein_record(ProteinRec)
 
-email = 'zhuzhuoerbilly@gmail.com'
-api = '15035947eb5eba07c081a0c90fc48acdb609'
-c = entrezpy.conduit.Conduit(email, api, threads=5)
+# email = 'zhuzhuoerbilly@gmail.com'
+# api = '15035947eb5eba07c081a0c90fc48acdb609'
+# c = entrezpy.conduit.Conduit(email, api, threads=5)
 
-geneList = ['APOE',
-			'APP',
-			'PSEN1',
-			'SRY']
-geneSearch = [{'db':'gene', 'term': x + '[sym] AND human[ORGN]'} for x in geneList]
 
-seqQurey = []
-for query in geneSearch:
-	fetchGene = c.new_pipeline()
-	sid = fetchGene.add_search(query)
-	lid = fetchGene.add_link({'cmd':'neighbor_history', 'db':'Nucleotide'}, dependency=sid)
-	lid = fetchGene.add_search({'cmd':'neighbor_history'}, dependency=lid)
-	fid = fetchGene.add_fetch({'retmax': 1, 'retmode':'xml','rettype':'fasta'}, dependency=lid, analyzer=SeqAnalyzer())
+
+# geneList = ['APOE',
+# 			'APP',
+# 			'PSEN1',
+# 			'SRY']
+# geneSearch = [{'db':'gene', 'term': x + '[sym] AND human[ORGN]'} for x in geneList]
+
+# genes = {}
+
+# for index in range(len(geneList)):
 	
-	fetchG = c.new_pipeline()
-	sid1 = fetchG.add_search(query)
-	fid1 = fetchG.add_fetch({'retmax': 1, 'retmode':'xml','rettype':'fasta'}, dependency=sid1, analyzer=GeneAnalyzer())
+# 	gene = {'geneSym': geneList[index]}
+# 	query = geneSearch[index]
+# 	fetchGene = c.new_pipeline()
+# 	sid = fetchGene.add_search(query)
+# 	lid = fetchGene.add_link({'cmd':'neighbor_history', 'db':'Nucleotide'}, dependency=sid)
+# 	lid = fetchGene.add_search({'cmd':'neighbor_history'}, dependency=lid)
+# 	fid = fetchGene.add_fetch({'retmax': 1, 'retmode':'xml','rettype':'fasta'}, dependency=lid, analyzer=SeqAnalyzer())
+	
+# 	fetchG = c.new_pipeline()
+# 	sid1 = fetchG.add_search(query)
+# 	fid1 = fetchG.add_fetch({'retmax': 1, 'retmode':'xml','rettype':'fasta'}, dependency=sid1, analyzer=GeneAnalyzer())
 	
 
-	fetchProtein = c.new_pipeline()
-	sid2 = fetchProtein.add_search(query)
-	lid2 = fetchProtein.add_link({'cmd':'neighbor_history', 'db':'protein'}, dependency=sid2)
-	lid2 = fetchProtein.add_search({'cmd':'neighbor_history'}, dependency=lid2)
-	fid2 = fetchProtein.add_fetch({'retmax': 1, 'retmode':'xml','rettype':'fasta'}, dependency=lid2, analyzer=proteinAnalyzer())
-	protein_res = c.run(fetchProtein).get_result()
+# 	fetchProtein = c.new_pipeline()
+# 	sid2 = fetchProtein.add_search(query)
+# 	lid2 = fetchProtein.add_link({'cmd':'neighbor_history', 'db':'protein'}, dependency=sid2)
+# 	lid2 = fetchProtein.add_search({'cmd':'neighbor_history'}, dependency=lid2)
+# 	fid2 = fetchProtein.add_fetch({'retmax': 1, 'retmode':'xml','rettype':'fasta'}, dependency=lid2, analyzer=proteinAnalyzer())
+# 	protein_res = c.run(fetchProtein).get_result()
 	
 	
-	g_res = c.run(fetchG).get_result()
+# 	g_res = c.run(fetchG).get_result()
 
-	for i in g_res.gene_records:
-		print('gene seqId: {}'.format(g_res.gene_records[i].seqId))
-		print('gene phenotype: {}'.format(g_res.gene_records[i].phenotype))
-		print('gene loc: {}'.format(g_res.gene_records[i].loc))
+# 	for i in g_res.gene_records:
+# 		gene.update({
+# 			'phenotype': g_res.gene_records[i].phenotype,
+# 			'geneLoc': g_res.gene_records[i].loc
+# 		})
 	
-	res = c.run(fetchGene).get_result()
+# 	res = c.run(fetchGene).get_result()
 
 	
-	for i in res.seq_records:
-		print('seq accver:{}'.format(res.seq_records[i].accver))
-		print('seq sid:{}'.format(res.seq_records[i].sid))
-		print('seq taxid:{}'.format(res.seq_records[i].taxid))
-		print('seq orgname:{}'.format(res.seq_records[i].orgname))
-		print('seq defline:{}'.format(res.seq_records[i].defline))
-		print('seq seqLen:{}'.format(res.seq_records[i].seqLen))
-		print('seq sequence:{}'.format(res.seq_records[i].sequence[:30]))
+# 	for i in res.seq_records:
+# 		gene.update({
+# 			'geneSeq': res.seq_records[i].sequence
+# 		})
 		
 
-	for i in protein_res.protein_records:
-		print('protein id: {}'.format(protein_res.protein_records[i].pid))
-		print('protein name: {}'.format(protein_res.protein_records[i].pname))
-		print('protein sequence: {}'.format(protein_res.protein_records[i].pSquence[:30]))
-		print("##############")
+# 	for i in protein_res.protein_records:
+# 		gene.update({
+# 			'proteinId': protein_res.protein_records[i].pid,
+# 			'proteinName': protein_res.protein_records[i].pname,
+# 			'proteinSeq': protein_res.protein_records[i].pSquence
+# 			})
+	
+
+
+# with open("output.json", "w") as outfile:
+# 	json.dump(genes, outfile)

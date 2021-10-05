@@ -1,0 +1,5 @@
+A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+ALPHABETS = 'BFPR'
+
+EMAIL = 'zhuzhuoerbilly@gmail.com'
+API = '15035947eb5eba07c081a0c90fc48acdb609'
