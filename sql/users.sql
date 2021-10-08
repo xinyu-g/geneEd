@@ -1,0 +1,1 @@
+-- TODO: create user tables and favorites table
