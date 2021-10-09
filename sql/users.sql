@@ -1,1 +1,14 @@
--- TODO: create user tables and favorites table
+CREATE TABLE users(
+    userName VARCHAR(255) PRIMARY KEY,
+    password VARCHAR(255),
+    createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    accountType VARCHAR(30)
+)
+
+CREATE TABLE favorites(
+    userName VARCHAR(255) PRIMARY KEY,
+    symbol VARCHAR(8),
+    createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (userName) REFERENCES users (userName) ON DELETE CASCADE,
+    FOREIGN KEY (symbol) REFERENCES gene (symbol) ON DELETE CASCADE
+)
