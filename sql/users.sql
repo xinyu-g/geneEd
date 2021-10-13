@@ -3,7 +3,7 @@ CREATE TABLE users(
     password VARCHAR(255),
     createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     accountType VARCHAR(30)
-)
+);
 
 CREATE TABLE favorites(
     userName VARCHAR(255) PRIMARY KEY,
@@ -11,4 +11,4 @@ CREATE TABLE favorites(
     createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userName) REFERENCES users (userName) ON DELETE CASCADE,
     FOREIGN KEY (symbol) REFERENCES gene (symbol) ON DELETE CASCADE
-)
+);
