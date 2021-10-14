@@ -11,8 +11,8 @@ CREATE TABLE disease(
 CREATE TABLE protein(
 	proteinId VARCHAR(32) PRIMARY KEY,
     proteinName VARCHAR(1024),
-    diseaseName VARCHAR(255),
-    seq TEXT,
+    diseaseName VARCHAR(512),
+    sequence TEXT,
     FOREIGN KEY (diseaseName) REFERENCES disease(diseaseName)
 );
 
@@ -22,6 +22,7 @@ CREATE TABLE gene(
     proteinId VARCHAR(32),
     proteinName VARCHAR(1024),
     locus VARCHAR(255),
+    sequence LONGTEXT,
     popularity INT DEFAULT 0,
     FOREIGN KEY (proteinId) REFERENCES protein(proteinId)
 );
@@ -34,9 +35,9 @@ CREATE TABLE phenotype(
 );
 
 CREATE TABLE treatment(
-    treatmentName VARCHAR(255) PRIMARY KEY,
-    diseaseName VARCHAR(255),
-    treatmentDescription VARCHAR(100),
+    treatmentName VARCHAR(512),
+    diseaseName VARCHAR(512),
+    treatmentDescription VARCHAR(2000),
     treatmentLocation VARCHAR(255),
     FOREIGN KEY (diseaseName) REFERENCES disease(diseaseName)
 );
@@ -59,22 +60,22 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/gene.csv' 
-INTO TABLE gene 
-FIELDS TERMINATED BY '~' 
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+-- LOAD DATA LOW_PRIORITY INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/gene.csv' 
+-- INTO TABLE gene 
+-- FIELDS TERMINATED BY '~' 
+-- ENCLOSED BY '"'
+-- LINES TERMINATED BY '\n'
+-- IGNORE 1 ROWS;
 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/phenotype.csv' 
 INTO TABLE phenotype 
-FIELDS TERMINATED BY '~' 
+FIELDS TERMINATED BY '~'
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/treatment.csv' 
-INTO TABLE treatement 
+INTO TABLE treatment 
 FIELDS TERMINATED BY '~' 
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
