@@ -32,13 +32,14 @@ def main():
     df = pd.merge(genes_phenos_diseases, genes_proteins_seqs, on='geneSym')
 
     # genes relation
-    genes = df[['geneSym', 'geneName', 'proteinId', 'proteinName', 'geneLoc']]
+    genes = df[['geneSym', 'geneName', 'proteinId', 'proteinName', 'geneLoc', 'geneSeq']].copy()
+    genes['popularity'] = 0
     genes = genes.drop_duplicates()
 
 
     # phenotypes relation
     phenotypes = df[['geneSym', 'phenotype']].copy()
-    phenotypes.loc['variations'] = 0
+    phenotypes['variations'] = 0
     phenotypes = phenotypes.drop_duplicates()
 
     # TODO: split disease lists into atoms so that data is in 1nf
@@ -54,12 +55,16 @@ def main():
     df = pd.merge(drugs_genes, genes_phenos_diseases, on='geneSym')
 
     treatments = df[['product_name', 'diseases', 'descr', 'route']]
-    treatments.drop_duplicates()
+    print(treatments.info())
+    treatments['product_name'] = treatments['product_name'].apply(lambda x: x.str.lower())
+    treatments = treatments.drop_duplicates('product_name')
+
 
     print("Inserting items into database")
 
     # this order should match the one in sql/data.sql
-    relations = [('disease',diseases), ('protein',proteins), ('gene',genes), ('phenotype',phenotypes), ('treatment',treatments)]
+    #relations = [('disease',diseases), ('protein',proteins), ('gene',genes), ('phenotype',phenotypes), ('treatment',treatments)]
+    relations = [('treatment', treatments)]
     for n,r in relations:
         print("saving",n)
         r.to_csv('csv/' + n + '.csv', index=False, na_rep='None', sep='~')
