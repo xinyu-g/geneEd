@@ -1,0 +1,17 @@
+<!doctype html>
+<title>geneEd</title>
+
+{% block header %}
+  <h1>{{symbol}}</h1>
+  <h3>{{fullName}}</h3>
+  <p>{{location}}</p>
+{% endblock %}
+
+<section class="content">
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}
+  
+  {% endblock %}
+</section>
