@@ -23,7 +23,7 @@ def searchSymbol():
         symbols = cur.fetchall()
 
         if symbols:
-            return render_template('gene.html', symbols=symbols)
+            return render_template('searchresults.html', symbols=symbols)
 
             # return redirect('/info/gene/'.format(symbols))
         return render_template('no_results.html',symbol=sym)
