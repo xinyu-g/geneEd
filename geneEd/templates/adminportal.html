@@ -1,0 +1,49 @@
+<!doctype html>
+<title>geneEd</title>
+
+{% block header %}
+  
+{% endblock %}
+
+<section class="content">
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}
+  <div>
+    <h2>Most popular genes</h2>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Popularity</th>
+        </tr>
+        {% for (sym, name, pop) in top10 %}
+            <tr>
+                <td>{{sym}}</td>
+                <td>{{name}}</td>
+                <td>{{pop}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+  </div>
+  <div>
+      <h2>Modify database</h2>
+      <form method="post">
+        <label for="query">Gene symbol</label>
+        <input name="query" id="query">
+        <br>
+        <label for="view">View</label>
+        <input type="radio" name="action" id="view" value="view">
+        <br>
+        <label for="update">Update</label>
+        <input type="radio" name="action" id="update" value="update">
+        <br>
+        <label for="delete">Delete</label>
+        <input type="radio" name="action" id="delete" value="delete">
+        <br>
+        <input type="submit" value="Submit">
+      </form>
+  </div>  
+  {% endblock %}
+</section>
