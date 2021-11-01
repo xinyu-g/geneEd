@@ -1,0 +1,4 @@
+SESSION_NAME = 'login'
+
+SECRET_KEY = b' \xa4m!^\x80\xf5\xbc\x06\xba' \
+             b' \xcc\xf6\x8a\xd1\xdeD\xe3t\xd2P\x028)K'
