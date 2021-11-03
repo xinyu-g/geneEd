@@ -39,6 +39,34 @@ def updateGeneDatabase(sym):
     cnx.commit()
     return redirect('/info/gene/{0}'.format(sym))
 
+@bp.route('/newentry', methods=["POST"])
+def createNewEntry():
+    symbol = request.form['symbol']
+    fullName = request.form['fullName']
+    proteinId = request.form['proteinId']
+    proteinName = request.form['proteinName']
+    locus = request.form['locus']
+    geneSequence = request.form['geneSequence']
+    diseaseName = request.form['diseaseName']
+    proteinSequence = request.form['proteinSequence']
+    mutationType = request.form['mutationType']
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cur = cnx.cursor()
+    stmt0 = ("SELECT symbol FROM gene WHERE symbol='{0}'".format(symbol))
+    cur.execute(stmt0)
+    results = cur.fetchall()
+    # silently insert new genes, show old one if it exists
+    if len(results) == 0:
+        stmt1 = ("INSERT INTO disease VALUES ('{0}', '{1}')".format(diseaseName, mutationType))
+        stmt2 = ("INSERT INTO protein VALUES ('{0}', '{1}', '{2}', '{3}')".format(proteinId, proteinName, diseaseName, proteinSequence))
+        stmt3 = ("INSERT INTO gene VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6})".format(symbol, fullName, proteinId, proteinName, locus, geneSequence, 0))
+        cur.execute(stmt1)
+        cur.execute(stmt2)
+        cur.execute(stmt3)
+        cnx.commit()
+    return redirect("/info/gene/{0}".format(symbol))
+
+
 def updateGene(sym):
     cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
     cur = cnx.cursor()
@@ -54,9 +82,18 @@ def updateGene(sym):
 
 def deleteGene(sym):
     cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
-    delete = ("DELETE FROM gene WHERE symbol = '" + sym + "'")
     cur = cnx.cursor()
-    cur.execute(delete)
+    stmt0 = ("SELECT symbol, protein.proteinId, disease.diseaseName FROM (gene JOIN protein ON gene.proteinId=protein.proteinId) JOIN disease ON protein.diseaseName=disease.diseaseName WHERE symbol='{0}'".format(sym))
+    cur.execute(stmt0)
+    results = cur.fetchall()
+    for (sym, proteinId, diseaseName) in results:
+        delete0 = ("DELETE FROM disease WHERE diseaseName='{0}'".format(diseaseName))
+        delete1 = ("DELETE FROM protein WHERE proteinId='{0}'".format(proteinId))
+        delete2 = ("DELETE FROM gene WHERE symbol='{0}'".format(sym))
+        cur.execute(delete2)
+        cur.execute(delete1)
+        cur.execute(delete0)
+        cnx.commit()
     if cur.rowcount > 0:
         return render_template('deletesuccess.html', symbol=sym)
     else:
