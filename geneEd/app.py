@@ -6,7 +6,8 @@ from . import search, info, login, admin, register
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
-    csrf = CSRFProtect(app)
+    app.secret_key = 'very secret'
+    CSRFProtect(app)
     
 
     app.register_blueprint(search.bp)

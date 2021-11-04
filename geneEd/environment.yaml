@@ -12,4 +12,4 @@ dependencies:
     - pip
     - pip:
         - entrezpy
-        - flask-wtf
+        - flask_wtf
