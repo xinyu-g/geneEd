@@ -40,11 +40,12 @@ def login(connection):
         print("username and password authentication fails")
         flask.abort(403)
     print(user)
-    password = user[1]
+    password = user[4]
     if password == password_form:
-        flask.session[
-            geneEd.app.config['SESSION_COOKIE_NAME']
-        ] = username_form
+        # flask.session[
+        #     geneEd.app.config['SESSION_COOKIE_NAME']
+        # ] = username_form
+        print("login success")
     else:
         print("username and password authentication fails")
         flask.abort(403)
