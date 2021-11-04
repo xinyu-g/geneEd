@@ -1,17 +1,19 @@
 
 from flask import Flask
 from flask import render_template
-from . import search, info, login, admin
+from flask_wtf.csrf import CSRFProtect
+from . import search, info, login, admin, register
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
-
+    csrf = CSRFProtect(app)
     
 
     app.register_blueprint(search.bp)
     app.register_blueprint(info.bp)
     app.register_blueprint(login.bp)
     app.register_blueprint(admin.bp)
+    app.register_blueprint(register.bp)
     app.config.from_object('geneEd.config')
 
     @app.route('/')

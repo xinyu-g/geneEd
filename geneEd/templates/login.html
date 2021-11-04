@@ -20,7 +20,7 @@
 
           </div>
           <div class="registration">
-            Need an Account? <a href="#">Sign Up</a>.
+            Need an Account? <a href="{{url_for ('register.register')}}">Sign Up</a>.
           </div>
           <form action="" method="POST" enctype="multipart/form-data">
             <label for="login" class="login">
@@ -36,6 +36,7 @@
             
             <button class="button" type="submit", value="login">Sign In</button>
             <input type="hidden" name="operation" value="login"/>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           </form>
           <div class="lost-passwd">
             <a href="#">Forgot your password?</a>
