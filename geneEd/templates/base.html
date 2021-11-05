@@ -6,8 +6,8 @@
     <header>
       <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <ul>
-         <li><a class="links" href="/user/login"><button class="signbutton" type="button">Sign in</button></a></li>
-           <!-- <li><a href="#grid"><img class="grid" src="https://cdn3.iconfinder.com/data/icons/navigation-and-settings/24/Material_icons-01-11-512.png" title="Google apps"></a></li>
+         <li><a class="links" href="{{url_for ('login.account_login')}}"><button class="signbutton" type="button">Sign in</button></a></li>
+         <li><a class="links" href="{{url_for ('register.register')}}"><button class="signbutton" type="button">Sign up</button></a></li>           <!-- <li><a href="#grid"><img class="grid" src="https://cdn3.iconfinder.com/data/icons/navigation-and-settings/24/Material_icons-01-11-512.png" title="Google apps"></a></li>
           <li><a href="#images">Images</a></li>
           <li><a href="#gmail">Gmail</a></li> -->
           </ul>  

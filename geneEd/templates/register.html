@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Register</title>
+  </head>
+
+  <body>
+    <h1>Register</h1>
+    <form
+      action="{{url_for('register.register')}}"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <div class="username-container">
+        <label for="username" class=""> User Name </label>
+        <input type="text" name="username" placeholder="Username" required />
+      </div>
+
+      <div class="password-container">
+        <label for="password" class=""> Password </label>
+        <input
+          id="passwd"
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+      </div>
+
+      <button class="button" type="submit" , value="register">Sign Up</button>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    </form>
+    <div class="msg">{{msg}}</div>
+    <a href="{{url_for ('login.account_login')}}"><b>Log In</b></a>
+  </body>
+</html>
