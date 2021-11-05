@@ -28,17 +28,7 @@
       </div>
     </section>
 
-    <!-- <section class="container">
-      <div class="dropdown">
-        <select name="one" class="dropdown-select">
-          <option value="">Category</option>
-          <li><a class="links" href="/search/genesymbol"><button type="button"><option>Gene</option></button></a></li>
-          <li><a class="links" href="/user/login"><button type="button"><option>Protein</option></button></a></li>
-          <li><a class="links" href="#"><button type="button"><option>Disease</option></button></a></li>
-        </select>
-      </div>
-    </section> -->
-
+<!-- 
     <div class="bar">
       
       <input class="searchbar" type="text" title="Search">
@@ -47,7 +37,23 @@
     <div class="buttons">
       <button class="button" type="button">Search</button>
       <button class="button" type="button">I'm Feeling Lucky</button>
-     </div>
+     </div> -->
+
+     <form method = "post">
+      <div class="bar">
+          
+        <input class="searchbar" type="text" title="Search" name="query" id="query">
+        <!-- <input name="query" id="query"> -->
+        <!-- <input type="submit" value="Search"> -->
+        <a href="#"> <img class="voice" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Google_mic.svg/716px-Google_mic.svg.png" title="Search by Voice"></a>
+      </div>
+      <div class="buttons">
+        <button class="button" type="submit" value='Search'>Search</button>
+        <button class="button" type="button">I'm Feeling Lucky</button>
+       </div>
+    
+    </form>
+
      {% endblock %}
   </body>
 

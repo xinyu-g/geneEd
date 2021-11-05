@@ -7,10 +7,6 @@ import mysql.connector
 bp = Blueprint('search', __name__, url_prefix='/search')
 
 
-# @bp.route('/result')
-# def displaySearchResult(symbols):
-#     return render_template('gene.html', symbols=symbols)
-
 
 @bp.route('/genesymbol', methods=('GET','POST'))
 def searchSymbol():
@@ -20,15 +16,25 @@ def searchSymbol():
         cur = cnx.cursor()
         query = ("SELECT * FROM gene WHERE symbol LIKE '%" + sym + "%'")
         cur.execute(query)
-        symbols = cur.fetchall()
+        entries = [t for t in cur]
 
-        if symbols:
-            return render_template('searchresults.html', symbols=symbols)
+        if entries:
+            return render_template('searchresults.html', entries=entries)
 
             # return redirect('/info/gene/'.format(symbols))
         return render_template('no_results.html',symbol=sym)
     else:
         return render_template('search.html')
+
+
+@bp.route('/advanced', method=('GET','POST'))
+def advanceSearch():
+    if request.method == 'POST':
+        gseq = request.form['gseq']
+        mtype = request.form['mtype']
+        
+
+
 
 
     
