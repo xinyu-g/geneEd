@@ -9,13 +9,13 @@ def create_app():
     app.secret_key = 'very secret'
     CSRFProtect(app)
     
-
+    app.config.from_object('geneEd.config')
     app.register_blueprint(search.bp)
     app.register_blueprint(info.bp)
     app.register_blueprint(login.bp)
     app.register_blueprint(admin.bp)
     app.register_blueprint(register.bp)
-    app.config.from_object('geneEd.config')
+    
 
     @app.route('/', methods=('GET','POST'))
     def index():

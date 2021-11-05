@@ -27,11 +27,12 @@ def searchSymbol():
         return render_template('search.html')
 
 
-@bp.route('/advanced', method=('GET','POST'))
+@bp.route('/advanced', methods=('GET','POST'))
 def advanceSearch():
     if request.method == 'POST':
         gseq = request.form['gseq']
         mtype = request.form['mtype']
+        
         
 
 
