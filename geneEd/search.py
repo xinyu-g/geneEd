@@ -9,7 +9,6 @@ import sys
 bp = Blueprint('search', __name__, url_prefix='/search')
 
 
-
 @bp.route('/genesymbol', methods=('GET','POST'))
 def searchSymbol():
     if request.method == 'POST':
@@ -53,16 +52,19 @@ def advanceSearch2():
 
     if request.method == 'POST':
  
-        gseq = request.form.getlist('gseq')
-        mtype = request.form.getlist('mtype')
+        gseq = request.form.get('gseq')
+        mtype = request.form.get('mtype')
         print(gseq, file=sys.stderr)
         print(mtype, file=sys.stderr)
         cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
         cur = cnx.cursor()
         lst = []
         if gseq and mtype:
+            gseq = gseq.split(',')
+            mtype = mtype.split(',')
             lst = list(itertools.product(gseq, mtype))
         elif gseq:
+            gseq = gseq.split(',')
             lst = list(itertools.product(gseq, ['recessive', 'X-linked', 'dominant']))
             
         print(lst, file=sys.stderr)
@@ -76,7 +78,7 @@ def advanceSearch2():
                         ) / LENGTH("'") / 2
                     ) AS diseaseCount
                 FROM gene g LEFT JOIN protein p USING (proteinName) LEFT JOIN disease d USING (diseaseName)
-                WHERE g.sequence LIKE "%{}%" AND diseaseName <> "[]" AND mutationType = "{}"
+                WHERE g.sequence LIKE "%{}%" AND diseaseName <> "[]" AND mutationType LIKE "%{}%"
                 """
         entries = []
         for g, m in lst:
@@ -97,14 +99,17 @@ def advanceSearch3():
 
     if request.method == 'POST':
  
-        dname = request.form.getlist('dname')
-        mtype = request.form.getlist('mtype')
+        dname = request.form.get('dname')
+        mtype = request.form.get('mtype')
         cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
         cur = cnx.cursor()
         lst = []
         if dname and mtype:
+            dname = dname.split(',')
+            mtype = mtype.split(',')
             lst = list(itertools.product(dname, mtype))
         elif dname:
+            dname = dname.split(',')
             lst = list(itertools.product(dname, ['recessive', 'X-linked', 'dominant']))
             
         print(lst, file=sys.stderr)
