@@ -6,6 +6,9 @@
 </head>
 
 <body class="hm-gradient">
+
+
+  {% block table %}
     <section>
         <!--for demo wrap-->
         <form method = "post">
@@ -42,14 +45,13 @@
             </thead>
           </table>
         </div>
-        <div class="tbl-content">
           <table cellpadding="0" cellspacing="0" border="0">
             <tbody>
                 {% for (sym, name, _, prot, loc, seq, pop) in entries %}
                 <tr>
                     <td>{{sym}}</td>
                     <td>{{name}}</td>
-                    <td>{{seq[:20]}}</td>
+                    <td>{{seq[:15]}}</td>
                     <td>{{loc}}</td>
                     <td>{{prot}}</td>
                 </tr>
@@ -58,9 +60,12 @@
           </table>
         </div>
       </section>
-    
+
+  {% endblock %}
   
 </body>
+
+
 
 
 
