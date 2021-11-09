@@ -1,6 +1,6 @@
 
 from flask import Flask, request
-from flask import render_template
+from flask import render_template, session
 # from flask_wtf.csrf import CSRFProtect
 from . import search, info, login, admin, register
 
@@ -20,9 +20,12 @@ def create_app():
     @app.route('/', methods=('GET','POST'))
     def index():
         # return 'Welcome to GeneEd'
+        username = None
+        if 'username' in session:
+            username = session['username']
         if request.method == 'POST':
             if request.form['query']:
                 return render_template('needCategory.html')
-        return render_template('base.html')
+        return render_template('base.html', username=username)
 
     return app

@@ -42,10 +42,9 @@ def login(connection):
     print(user)
     password = user[4]
     if password == password_form:
-        flask.session[
-            geneEd.app.config['SESSION_COOKIE_NAME']
-        ] = username_form
         print("login success")
+        flask.session['username'] = username_form
+        
     else:
         print("username and password authentication fails")
         flask.abort(403)
@@ -67,4 +66,11 @@ def account_login():
         if operation == 'login':
             login(connection)
 
+        return redirect('/')
+
+@bp.route('/logout', methods=['GET', 'POST'])
+def account_logout():
+    if request.method == 'GET':
+        if 'username' in flask.session:
+            del flask.session['username']
         return redirect('/')
