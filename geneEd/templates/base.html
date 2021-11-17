@@ -1,0 +1,71 @@
+
+
+<!DOCTYPE html>
+<html>
+  <center>
+    <header>
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <ul>
+         <li><a class="links" href="{{url_for ('login.account_login')}}"><button class="signbutton" type="button">Sign in</button></a></li>
+         {% if username %}
+         <li><a class="links" href="{{url_for ('login.account_logout')}}"><button class="signbutton" type="button">Log out</button></a></li>            
+         {% else %}
+         <li><a class="links" href="{{url_for ('register.register')}}"><button class="signbutton" type="button">Sign up</button></a></li>         
+         {% endif %}
+         <!-- <li><a href="#grid"><img class="grid" src="https://cdn3.iconfinder.com/data/icons/navigation-and-settings/24/Material_icons-01-11-512.png" title="Google apps"></a></li>
+          <li><a href="#images">Images</a></li>
+          <li><a href="#gmail">Gmail</a></li> -->
+          </ul>  
+    </header>
+    <div class="logo">
+      <img alt="GeneEd" src="../static/src/GeneEd.png">
+    </div>
+    {% if username %}
+      <h2>Hello {{username}}!</h2>
+    {% endif %}
+
+    <body>
+    {% block blog_usage %}
+    <section class="container">
+      <div class="dropdown">
+        <select name="one" class="dropdown-select" onchange="location = this.value;">
+          <option value="">Category</option>
+          <option value="/search/genesymbol">Gene</option>
+          <option value="#">Protein</option>
+          <option value="#">Disease</option>
+        </select>
+      </div>
+    </section>
+
+<!-- 
+    <div class="bar">
+      
+      <input class="searchbar" type="text" title="Search">
+      <a href="#"> <img class="voice" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Google_mic.svg/716px-Google_mic.svg.png" title="Search by Voice"></a>
+    </div>
+    <div class="buttons">
+      <button class="button" type="button">Search</button>
+      <button class="button" type="button">I'm Feeling Lucky</button>
+     </div> -->
+
+     <form method = "post">
+      <div class="bar">
+          
+        <input class="searchbar" type="text" title="Search" name="query" id="query">
+        <!-- <input name="query" id="query"> -->
+        <!-- <input type="submit" value="Search"> -->
+        <a href="#"> <img class="voice" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Google_mic.svg/716px-Google_mic.svg.png" title="Search by Voice"></a>
+      </div>
+      <div class="buttons">
+        <button class="button" type="submit" value='Search'>Search</button>
+        <!-- <button class="button" type="submit" value='/search/advancedsearch'>Advanced Search</button> -->
+        <a class="button" href='/search/advancedsearch'>Advanced Search</a>
+       </div>
+    
+    </form>
+
+     {% endblock %}
+  </body>
+</center>
+</html>
+

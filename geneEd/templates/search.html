@@ -1,0 +1,32 @@
+<!doctype html>
+{% extends 'base.html' %}
+
+{% block blog_usage %}
+<section class="container">
+  <div class="dropdown">
+    <select name="one" class="dropdown-select" onchange="location = this.value;">
+      <!-- <option value="">Category</option> -->
+      <option value="/search/genesymbol">Gene</option>
+      <option value="#">Protein</option>
+      <option value="#">Disease</option>
+    </select>
+  </div>
+</section>
+
+<form method = "post">
+  <div class="bar">
+      
+    <input class="searchbar" type="text" title="Search" name="query" id="query">
+    <!-- <input name="query" id="query"> -->
+    <!-- <input type="submit" value="Search"> -->
+    <a href="#"> <img class="voice" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Google_mic.svg/716px-Google_mic.svg.png" title="Search by Voice"></a>
+  </div>
+  <div class="buttons">
+    <button class="button" type="submit" value='Search'>Search</button>
+    <a class="button" href='/search/advancedsearch'>Advanced Search</a>
+   </div>
+
+</form>
+
+
+{% endblock %}

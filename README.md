@@ -23,3 +23,21 @@
 8. The database should be complete.
 
 Alternatively, use the dumpfile Hunter created to generate the entire database. (I generated this late last night and did not test).
+
+## Running the flask app
+0. Make sure that you have installed flask with conda, and have the MySQL server running with the database populated and accessible on localhost.
+
+1. Set the `FLASK_APP` environment variable (windows)
+   ```
+   > set FLASK_APP=geneEd
+   ```
+
+2. Set the `FLASK_ENV` environmen variable (windows)
+   ```
+   > set FLASK_ENV=development
+   ```
+3. Start the server with the following command:
+   ```
+   flask run
+   ```
+4. Flask starts on 127.0.0.1:5000 by default. Currently, genes can be searched for by symbol. To search for a symbol, navigate to [127.0.0.1:5000/search/genesymbol](127.0.0.1:5000/search/genesymbol). Try searching for TP53 or ACOX1. The symbol, name, and locaiton currently get displayed. Invalid queries will show an error page. 

@@ -1,0 +1,71 @@
+<!doctype html>
+<title>geneEd</title>
+{% extends 'base.html' %}
+
+{% block blog_usage %}
+    {{ super() }}
+    <div class="container" id="advanced-search-form">
+        <h2>Advanced Search</h2>
+        <!-- <form name='select'>
+
+        </form> -->
+        
+        {% block form %}
+        <form method = "post">
+          <section class="container">
+            <div class="dropdown">
+              <select name="select" class="dropdown-select" onchange="location = this.value;">
+                <option selected>What are you looking for</option>
+                <option value="">General</option>
+                <option value="{{url_for ('search.advanceSearch2')}}">Gene and Inheritence Type</option>
+                <option value="{{url_for ('search.advanceSearch3')}}">Disease, Protein and Treatment</option>
+                
+              </select>
+
+            </div>
+          </section>
+          <h3>Gene Related</h3>
+          <div class="form-group">
+            <label for="first-name">Gene Sequence</label>
+            <input type="text" class="form-control" placeholder="Separate multiple sequences by comma" id="gseq">
+      <!--       <input type="text" class="form-control" placeholder="Gene Sequence" id="first-name"> -->
+          </div>
+          <div class="form-group">
+            <label for="age">Gene Location</label>
+            <input type="text" class="form-control" placeholder="Gene chromosome Location" id="gloc">
+          </div>
+          <div class="form-group">
+            <label for="last-name">Mutation Type</label>
+            <input type="text" class="form-control" placeholder="Mutation Type (recessive, dominant, X-linked)" id="mtype">
+          
+          </div>
+          <h3>Protein Related</h3>
+          <div class="form-group">
+            <label for="country">Protein Sequence</label>
+            <input type="text" class="form-control" placeholder="Separate multiple sequences by comma" id="pseq">
+          </div>
+          <h3>Phenotype Relate</h3>
+          <div class="form-group">
+            <label for="email">Phenotype Name</label>
+            <input type="email" class="form-control" placeholder="Separate multiple phenotypes by comma" id="ptype">
+          </div>
+          <h3>Disease Related</h3>
+          <div class="form-group">
+            <label for="number">Disease Name</label>
+            <input type="text" class="form-control" placeholder="Separate multiple diseases by comma" id="dname">
+          </div>
+          <div class="form-group">
+            <label for="category">Treatment Name</label>
+            <input type="text" class="form-control" placeholder="Search by treatment" id="tname">
+          </div>
+          <div class="form-group">
+            <label for="education">Treatment Location</label>
+            <input type="text" class="form-control" placeholder="Treatment Location (tropical, intravenous, oral, etc.)" id="tloc">
+          </div>
+      
+          <div class="clearfix"></div>
+          <button type="submit" class="btn btn-info btn-lg btn-responsive" id="search"> <span class="glyphicon glyphicon-search"></span> Search</button>
+        </form>
+        {% endblock %}
+      </div>
+{% endblock %}

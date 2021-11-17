@@ -1,0 +1,40 @@
+<!doctype html>
+<head>
+    <title>geneEd</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <div class="logo">
+        <img alt="GeneEd" src="{{ url_for('static', filename='src/GeneEd.png') }}">
+    </div>
+</head>
+
+
+{% block blog_usage %}
+    <div class="container" id="advanced-search-form">
+        <h2>Advanced Search</h2>
+        <section class="container">
+            <div class="dropdown">
+              <select name="select" class="dropdown-select" onchange="location = this.value;">
+                <!-- <option selected>What are you looking for</option> -->
+                <option value="{{url_for ('search.advanceSearch')}}">General</option>
+                <option value="{{url_for ('search.advanceSearch2')}}">Gene and Inheritence Type</option>
+                <option selected>Disease, Protein and Treatment</option>
+              </select>
+            </div>
+          </section>
+        {% block form %}
+        <form method = "post" id='General-search'>
+          <p>Find diseases of interests. Query its name, count of related proteins, and count of the treatments corresponding to this disease </p>
+          <div class="form-group">
+            <label for="last-name">Mutation Type</label>
+            <input type="text" class="form-control" placeholder="Mutation Type (recessive, dominant, X-linked)" name='mtype' id="mtype">        
+          </div>
+          <div class="form-group">
+            <label for="number">Disease Name</label>
+            <input type="text" class="form-control" placeholder="Separate multiple diseases by comma" name='dname' id="dname">
+          </div>
+
+          <button type="submit" class="btn btn-info btn-lg btn-responsive" id="search"> <span class="glyphicon glyphicon-search"></span> Search</button>
+        </form>
+        {% endblock %}
+      </div>
+{% endblock %}

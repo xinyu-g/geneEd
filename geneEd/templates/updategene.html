@@ -1,0 +1,29 @@
+<!doctype html>
+<title>geneEd</title>
+
+{% block header %}
+{% endblock %}
+<!--
+symbol VARCHAR(8) PRIMARY KEY,
+    fullName VARCHAR(255),
+    proteinId VARCHAR(32),
+    proteinName VARCHAR(1024),
+    locus VARCHAR(255),
+    sequence LONGTEXT,
+    popularity INT DEFAULT 0,
+    FOREIGN KEY (proteinId) REFERENCES protein(proteinId)
+-->
+<section class="content">
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}
+  <form method="post" action='/admin/updategene/{{symbol}}'>
+      <label for="Symbol">Symbol</label><input name="symbol" value="{{symbol}}" disabled><br>
+      <label for="Name">Name</label><input name="fullName" value="{{name}}"><br>
+      <label for="Locus">Locus</label><input name="locus" value="{{locus}}"><br>
+      <label for="Popularity">Popularity</label><input name="popularity" value="{{popularity}}"><br>
+      <input type="Submit" value="Update">
+  </form>
+  {% endblock %}
+</section>

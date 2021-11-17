@@ -1,0 +1,68 @@
+<!doctype html>
+<title>geneEd</title>
+
+{% block header %}
+  
+{% endblock %}
+
+<section class="content">
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}
+  <!--Top genes in the database-->
+  <div>
+    <h2>Most popular genes</h2>
+    <table>
+        <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Popularity</th>
+        </tr>
+        {% for (sym, name, pop) in top10 %}
+            <tr>
+                <td>{{sym}}</td>
+                <td>{{name}}</td>
+                <td>{{pop}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+  </div>
+  <!--Section for modifying/deleting records-->
+  <div>
+      <h2>Modify database</h2>
+      <form method="post">
+        <label for="query">Gene symbol</label>
+        <input name="query" id="query">
+        <br>
+        <label for="view">View</label>
+        <input type="radio" name="action" id="view" value="view">
+        <br>
+        <label for="update">Update</label>
+        <input type="radio" name="action" id="update" value="update">
+        <br>
+        <label for="delete">Delete</label>
+        <input type="radio" name="action" id="delete" value="delete">
+        <br>
+        <input type="submit" value="Submit">
+      </form>
+  </div>
+  <!--Form to add a gene/protien/disease--> 
+  <div>
+    <h2>Insert new Gene, Protein, Disease</h2>
+    <form method="post" action="/admin/newentry">
+      <label for="symbol">Symbol:</label><input name="symbol" id="symbol"><br>
+      <label for="fullName">Full name:</label><input name="fullName" id="fullName"><br>
+      <label for="proteinId">Corresponding Protein Id</label><input name="proteinId" id="proteinId"><br>
+      <label for="proteinName">Corresponding Protein Name</label><input name="proteinName" id="proteinName"><br>
+      <label for="locus">Locus</label><input name="locus" id="locus"><br>
+      <label for="geneSequence">Gene Sequence</label><input name="geneSequence" id="geneSequence"><br>
+      <label for="diseaseName">Disease Name</label><input name="diseaseName" id="diseaseName"><br>
+      <label for="proteinSequence">Protein Sequence</label><input name="proteinSequence" id="proteinSequence"><br>
+      <label for="mutationType">Mutation Type</label><input name="mutationType" id="mutationType"><br>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+  {% endblock %}
+</section>
+</html>
