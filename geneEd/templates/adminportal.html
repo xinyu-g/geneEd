@@ -32,17 +32,22 @@
   <div>
       <h2>Modify database</h2>
       <form method="post">
-        <label for="query">Gene symbol</label>
-        <input name="query" id="query">
+        <label for="query">
+          Gene symbol
+          <input name="query" id="query" required>
+        </label>
         <br>
-        <label for="view">View</label>
-        <input type="radio" name="action" id="view" value="view">
+        <label for="view">View
+          <input type="radio" name="action" id="view" value="view" required>
+        </label>
         <br>
-        <label for="update">Update</label>
-        <input type="radio" name="action" id="update" value="update">
+        <label for="update">Update
+          <input type="radio" name="action" id="update" value="update" required>
+        </label>
         <br>
-        <label for="delete">Delete</label>
-        <input type="radio" name="action" id="delete" value="delete">
+        <label for="delete">Delete
+          <input type="radio" name="action" id="delete" value="delete" required>
+        </label>
         <br>
         <input type="submit" value="Submit">
       </form>
@@ -51,15 +56,15 @@
   <div>
     <h2>Insert new Gene, Protein, Disease</h2>
     <form method="post" action="/admin/newentry">
-      <label for="symbol">Symbol:</label><input name="symbol" id="symbol"><br>
-      <label for="fullName">Full name:</label><input name="fullName" id="fullName"><br>
-      <label for="proteinId">Corresponding Protein Id</label><input name="proteinId" id="proteinId"><br>
-      <label for="proteinName">Corresponding Protein Name</label><input name="proteinName" id="proteinName"><br>
-      <label for="locus">Locus</label><input name="locus" id="locus"><br>
-      <label for="geneSequence">Gene Sequence</label><input name="geneSequence" id="geneSequence"><br>
-      <label for="diseaseName">Disease Name</label><input name="diseaseName" id="diseaseName"><br>
-      <label for="proteinSequence">Protein Sequence</label><input name="proteinSequence" id="proteinSequence"><br>
-      <label for="mutationType">Mutation Type</label><input name="mutationType" id="mutationType"><br>
+      <label for="symbol">Symbol:</label><input name="symbol" id="symbol" required><br>
+      <label for="fullName">Full name:</label><input name="fullName" id="fullName" required><br>
+      <label for="proteinId">Corresponding Protein Id</label><input name="proteinId" id="proteinId" required><br>
+      <label for="proteinName">Corresponding Protein Name</label><input name="proteinName" id="proteinName" required><br>
+      <label for="locus">Locus</label><input name="locus" id="locus" required><br>
+      <label for="geneSequence">Gene Sequence</label><input name="geneSequence" id="geneSequence" required><br>
+      <label for="diseaseName">Disease Name</label><input name="diseaseName" id="diseaseName" required><br>
+      <label for="proteinSequence">Protein Sequence</label><input name="proteinSequence" id="proteinSequence" required><br>
+      <label for="mutationType">Mutation Type</label><input name="mutationType" id="mutationType" required><br>
       <input type="submit" value="Submit">
     </form>
   </div>
