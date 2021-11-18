@@ -16,7 +16,11 @@ def showGenePage(sym):
 
     if len(results) == 1:
         symbol, name, locus, popularity = results[0]
-        return render_template('gene.html', symbol=symbol, fullName=name, location=locus, popularity=popularity)
+        update = ("UPDATE gene SET popularity = popularity + 1 WHERE symbol = '" + sym + "'")
+        # single line updates are already transactions so we don't need one here
+        cur.execute(update)
+        cnx.commit()
+        return render_template('gene.html', symbol=symbol, fullName=name, location=locus, popularity=popularity+1)
     elif len(results) > 1:
         # TODO render a page that lets the user choose whihc one they want to view
         return "multple genes"
