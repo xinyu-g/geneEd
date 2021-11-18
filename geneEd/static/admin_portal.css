@@ -1,0 +1,105 @@
+* {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#popular {
+    position: float;
+    float: left;
+    width: 40%;
+    height: 100%;
+    background-color: aquamarine;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#popular table {
+    width: 80%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+
+#popular h2 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+#popular table tr th, td{
+    border: 1px solid black;
+}
+
+.ellipsis {
+    position: relative;
+}
+.ellipsis:before {
+    content: '&nbsp;';
+    visibility: hidden;
+}
+.ellipsis span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#popular td a {
+    color: black;
+    text-decoration: none;
+}
+
+#modify {
+    background-color: cornflowerblue;
+    width:100%;
+    top:0px;
+    top: 0px;
+}
+
+#modify h2 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+#modify #inputs {
+    position: relative;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#right {
+    position: absolute;
+    right: 5%;
+    width: 40%;
+    border: 1px solid red;
+}
+
+#create {
+    background-color: darkcyan;
+    width: 100%;
+    height: 20%;    
+    position: float;
+}
+
+#create h2 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+#create table tr th, td{
+    border: 1px solid black;
+}
+
+#create table {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+
+#create #submit {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}

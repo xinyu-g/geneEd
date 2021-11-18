@@ -1,5 +1,8 @@
 <!doctype html>
-<title>geneEd</title>
+<head>
+  <title>geneEd admin portal</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='admin_portal.css') }}">
+</head>
 
 {% block header %}
   
@@ -11,62 +14,83 @@
   {% endfor %}
   {% block content %}
   <!--Top genes in the database-->
-  <div>
+  <div id="popular">
     <h2>Most popular genes</h2>
     <table>
         <tr>
+            <th>Rank</th>
             <th>Symbol</th>
             <th>Name</th>
             <th>Popularity</th>
         </tr>
         {% for (sym, name, pop) in top10 %}
             <tr>
-                <td>{{sym}}</td>
-                <td>{{name}}</td>
-                <td>{{pop}}</td>
+                <td class="ellipsis" style="text-align: center;"><span>{{loop.index0 + 1}}</span></td>
+                <td class="ellipsis" style="text-align: left"><span><a href="/info/gene/{{sym}}">{{sym}}</span></td>
+                <td class="ellipsis" style="width:60%"><span>{{name}}</span></td>
+                <td class="ellipsis" style="text-align: center;"><span>{{pop}}</span></td>
             </tr>
         {% endfor %}
     </table>
   </div>
   <!--Section for modifying/deleting records-->
-  <div>
-      <h2>Modify database</h2>
-      <form method="post">
-        <label for="query">
-          Gene symbol
-          <input name="query" id="query" required>
-        </label>
-        <br>
-        <label for="view">View
-          <input type="radio" name="action" id="view" value="view" required>
-        </label>
-        <br>
-        <label for="update">Update
-          <input type="radio" name="action" id="update" value="update" required>
-        </label>
-        <br>
-        <label for="delete">Delete
-          <input type="radio" name="action" id="delete" value="delete" required>
-        </label>
-        <br>
-        <input type="submit" value="Submit">
+  <div id="right">
+    <div id="modify">
+        <h2>Modify database</h2>
+        <div id="inputs">
+          <form method="post">
+            <label for="query">
+              <input name='query' id='query'>
+              <select name="action" id="action">
+                <option name="view" id="view" value="view" required>View</option>
+                <option name="update" id="update" value="update" required>Update</option>
+                <option name="delete" id="delete" value="delete" required>Delete</option>
+              </select>
+            </label>
+            <input type="submit" value="Submit">
+          </form>
+        </div>
+      </div>
+    <!--Form to add a gene/protien/disease--> 
+    <div id="create">
+      <h2>Insert new Gene, Protein, Disease</h2>
+      <form method="post" action="/admin/newentry">
+        <table>
+          <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td><label for="symbol">Symbol:</label></td><td><input name="symbol" id="symbol" required></td>
+          </tr>
+          <tr>
+            <td><label for="fullName">Full name:</label></td><td><input name="fullName" id="fullName" required></td>
+          </tr>
+          <tr>
+            <td><label for="proteinId">Corresponding Protein Id</label></td><td><input name="proteinId" id="proteinId" required></td>
+          </tr>
+          <tr>
+            <td><label for="proteinName">Corresponding Protein Name</label></td><td><input name="proteinName" id="proteinName" required></td>
+          </tr>
+          <tr>
+            <td><label for="locus">Locus</label></td><td><input name="locus" id="locus" required></td>
+          </tr>
+          <tr>
+            <td><label for="geneSequence">Gene Sequence</label></td><td><textarea name="geneSequence" id="geneSequence" required></textarea></td>
+          </tr>
+          <tr>
+            <td><label for="diseaseName">Disease Name</label></td><td><input name="diseaseName" id="diseaseName" required></td>
+          </tr>
+          <tr>
+            <td><label for="proteinSequence">Protein Sequence</label></td><td><textarea name="proteinSequence" id="proteinSequence" required></textarea></td>
+          </tr>
+          <tr>
+            <td><label for="mutationType">Mutation Type</label></td><td><input name="mutationType" id="mutationType" required></td>
+          </tr>
+        </table>
+        <input id="submit" type="submit" value="Submit">
       </form>
-  </div>
-  <!--Form to add a gene/protien/disease--> 
-  <div>
-    <h2>Insert new Gene, Protein, Disease</h2>
-    <form method="post" action="/admin/newentry">
-      <label for="symbol">Symbol:</label><input name="symbol" id="symbol" required><br>
-      <label for="fullName">Full name:</label><input name="fullName" id="fullName" required><br>
-      <label for="proteinId">Corresponding Protein Id</label><input name="proteinId" id="proteinId" required><br>
-      <label for="proteinName">Corresponding Protein Name</label><input name="proteinName" id="proteinName" required><br>
-      <label for="locus">Locus</label><input name="locus" id="locus" required><br>
-      <label for="geneSequence">Gene Sequence</label><input name="geneSequence" id="geneSequence" required><br>
-      <label for="diseaseName">Disease Name</label><input name="diseaseName" id="diseaseName" required><br>
-      <label for="proteinSequence">Protein Sequence</label><input name="proteinSequence" id="proteinSequence" required><br>
-      <label for="mutationType">Mutation Type</label><input name="mutationType" id="mutationType" required><br>
-      <input type="submit" value="Submit">
-    </form>
+    </div>
   </div>
   {% endblock %}
 </section>
