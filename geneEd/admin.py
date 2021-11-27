@@ -66,6 +66,19 @@ def createNewEntry():
         cnx.commit()
     return redirect("/info/gene/{0}".format(symbol))
 
+@bp.route('/visual', methods=["GET"])
+def visual():
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    query = ("SELECT symbol, fullName, popularity FROM gene ORDER BY popularity DESC, symbol LIMIT 10")
+    cur = cnx.cursor()
+    cur.execute(query)
+    symbols = []
+    pops = []
+    for t in cur:
+        symbols.append(t[0])
+        pops.append(t[2])
+    return render_template('bar.html', title='Most popular genes visualization', max=20, labels=symbols, values=pops)
+
 
 def updateGene(sym):
     cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
