@@ -39,7 +39,6 @@ def login(connection):
     if not user:
         print("username and password authentication fails")
         flask.abort(403)
-    print(user)
     password = user[4]
     if password == password_form:
         print("login success")
