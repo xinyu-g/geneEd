@@ -87,6 +87,10 @@ h1{
     color: rgb(0, 0, 0);
     border-bottom: solid 1px rgba(255,255,255,0.1);
   }
+
+  td a{
+    color: rgb(0, 0, 0);
+  }
   
   
   /* demo styles */
