@@ -52,3 +52,12 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2021-11-03 23:58:07
+
+DROP TABLE IF EXISTS `favorites`;
+CREATE TABLE favorites(
+    `user_id` INT PRIMARY KEY,
+    `symbol` VARCHAR(8),
+    `createDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (symbol) REFERENCES gene (symbol) ON DELETE CASCADE
+);
