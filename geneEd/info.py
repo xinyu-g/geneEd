@@ -10,16 +10,24 @@ bp = Blueprint('info', __name__, url_prefix='/info')
 def showGenePage(sym):
     cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
     cur = cnx.cursor()
-    query = ("SELECT symbol,fullName,locus, popularity FROM gene WHERE symbol = '" + sym + "'")
-    cur.execute(query)
+    # symbol,fullName,locus, popularity
+    query = ("""SELECT symbol, fullName, proteinId, locus, G.sequence, popularity, P.proteinName, P.sequence, diseaseName 
+                FROM gene G JOIN protein P USING (proteinId) NATURAL JOIN disease where symbol = '{}'""")
+    cur.execute(query.format(sym))
     results = cur.fetchall()
 
+    if not results:
+        query2 = ("SELECT * FROM gene WHERE symbol = '" + sym + "'")
+        cur.execute(query2)
+        results = cur.fetchall()
+
     if len(results) == 1:
-        symbol, name, locus, popularity = results[0]
+        # symbol, name, locus, popularity = results[0]
         update = ("UPDATE gene SET popularity = popularity + 1 WHERE symbol = '" + sym + "'")
         # single line updates are already transactions so we don't need one here
         cur.execute(update)
         cnx.commit()
+
         results = []
         if 'id' in session.keys():
             query = ("SELECT * FROM favorites WHERE user_id='{0}' AND symbol='{1}'".format(session['id'], symbol))
@@ -37,7 +45,10 @@ def showGenePage(sym):
             else:
                 likeButtonText = 'Like'
         print('showLikeButton',showLikeButton)
-        return render_template('gene.html', symbol=symbol, fullName=name, location=locus, popularity=popularity+1, likeButtonText=likeButtonText, showLikeButton=showLikeButton)
+#         return render_template('gene.html', symbol=symbol, fullName=name, location=locus, popularity=popularity+1, likeButtonText=likeButtonText, showLikeButton=showLikeButton)
+
+        return render_template('gene.html', entries=results)
+
     elif len(results) > 1:
         # TODO render a page that lets the user choose whihc one they want to view
         return "multple genes"
