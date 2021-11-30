@@ -1,6 +1,31 @@
 <!doctype html>
 <title>geneEd</title>
 
+<script>
+  function clickLikeButton() {
+    var btnText = document.getElementById('likebutton').innerHTML;
+    var data = {}
+    var successText = ''
+    if(btnText == 'Like') {
+      //document.getElementById('likebutton').innerHTML = 'Liked';
+      var data = {symbol: "{{symbol}}", action: "Like"}
+      successText = 'Liked'
+    } else {
+      //document.getElementById('likebutton').innerHTML = 'Like';
+      var data = {symbol: "{{symbol}}", action: "Unlike"}
+      successText = 'Like'
+    }
+    fetch("/api/like/{{symbol}}", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    }).then(res => {
+      document.getElementById('likebutton').innerHTML = successText;
+      console.log(res);
+    });
+  }
+</script>
+
 {% block header %}
   <h1>{{symbol}}</h1>
   <h3>{{fullName}}</h3>
@@ -15,4 +40,5 @@
   {% block content %}
   
   {% endblock %}
+  <button id="likebutton" onclick="clickLikeButton()">{{likeButtonText}}</button>
 </section>
