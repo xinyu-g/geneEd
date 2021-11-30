@@ -49,7 +49,7 @@
             <tbody>
                 {% for (sym, name, _, prot, loc, seq, pop) in entries %}
                 <tr>
-                    <td>{{sym}}</td>
+                    <td><a href="/info/gene/{{sym}}">{{sym}}</a></td>
                     <td>{{name}}</td>
                     <td>{{seq[:15]}}</td>
                     <td>{{loc}}</td>
