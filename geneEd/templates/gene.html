@@ -1,10 +1,5 @@
 <!doctype html>
 
-<head>
-  <title>geneEd</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-
 <script>
   function clickLikeButton() {
     var btnText = document.getElementById('likebutton').innerHTML;
@@ -30,7 +25,10 @@
   }
 </script>
 
-
+<head>
+  <title>geneEd</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 
 <div class="container" id="gene-info">
   {% for (symbol, fullName, protId, location, geneSeq, popularity, protName, protSeq, dname) in entries %}
@@ -38,15 +36,11 @@
   <div class="result-display">
     <h2>{{symbol}}</h2>
     <div class="group">
-
       <p>Gene Name <span>{{fullName}}</span></p>
-  
-
     </div>
     
     <div class="group">
       <p>Gene Location<span>{{location}}</span></p>
-      
     </div>
 
     <div class="group">
@@ -60,23 +54,26 @@
     <div class="group">
       <p>Protein Id<span>{{protId}}</span></p>
     </div>
+
     <div class="group">
       <p>Protein Name<span>{{protName}}</span></p>
     </div>
+
     <div class="group">
       <p>Protein Sequence<span>{{protSeq[:30]}}</span></p>
-
     </div>
 
 
     <div class="group">
       <p>Disease<span>{{dname[2:-2]}}</span></p>
     </div>
-
-
     
   </div>
   {% endfor %}
+  <!-- <button id="likebutton" onclick="clickLikeButton()">button</button> -->
+  {% if showLikeButton %}
+    <button id="likebutton" onclick="clickLikeButton()">{{likeButtonText}}</button>
+  {% endif %}
 </div>
 
 
@@ -84,10 +81,6 @@
   {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
   {% endfor %}
-  {% block content %}
+
   
-  {% endblock %}
-  {% if showLikeButton %}
-    <button id="likebutton" onclick="clickLikeButton()">{{likeButtonText}}</button>
-  {% endif %}
 </section>
