@@ -30,7 +30,7 @@ def showGenePage(sym):
 
         results = []
         if 'id' in session.keys():
-            query = ("SELECT * FROM favorites WHERE user_id='{0}' AND symbol='{1}'".format(session['id'], symbol))
+            query = ("SELECT * FROM favorites WHERE user_id='{0}' AND symbol='{1}'".format(session['id'], sym))
             cur.execute(query)
             try:
                 results = cur.fetchall()
