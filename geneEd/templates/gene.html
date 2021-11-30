@@ -1,8 +1,35 @@
 <!doctype html>
+
 <head>
   <title>geneEd</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
+<script>
+  function clickLikeButton() {
+    var btnText = document.getElementById('likebutton').innerHTML;
+    var data = {}
+    var successText = ''
+    if(btnText == 'Like') {
+      //document.getElementById('likebutton').innerHTML = 'Liked';
+      var data = {symbol: "{{symbol}}", action: "Like"}
+      successText = 'Liked'
+    } else {
+      //document.getElementById('likebutton').innerHTML = 'Like';
+      var data = {symbol: "{{symbol}}", action: "Unlike"}
+      successText = 'Like'
+    }
+    fetch("/api/like/{{symbol}}", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    }).then(res => {
+      document.getElementById('likebutton').innerHTML = successText;
+      console.log(res);
+    });
+  }
+</script>
+
 
 
 <div class="container" id="gene-info">
@@ -52,6 +79,7 @@
   {% endfor %}
 </div>
 
+
 <section class="content">
   {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
@@ -59,4 +87,7 @@
   {% block content %}
   
   {% endblock %}
+  {% if showLikeButton %}
+    <button id="likebutton" onclick="clickLikeButton()">{{likeButtonText}}</button>
+  {% endif %}
 </section>
