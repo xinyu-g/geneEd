@@ -40,5 +40,7 @@
   {% block content %}
   
   {% endblock %}
-  <button id="likebutton" onclick="clickLikeButton()">{{likeButtonText}}</button>
+  {% if showLikeButton %}
+    <button id="likebutton" onclick="clickLikeButton()">{{likeButtonText}}</button>
+  {% endif %}
 </section>

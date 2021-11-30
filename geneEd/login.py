@@ -37,15 +37,19 @@ def login(connection):
     cursor.execute("SELECT * FROM users WHERE username='" + username_form + "'")
     user = cursor.fetchone()
     if not user:
-        print("username and password authentication fails")
+        print("username and password authentication fails -- no record")
         flask.abort(403)
     password = user[4]
+    id = user[0]
+    print(user)
     if password == password_form:
         print("login success")
         flask.session['username'] = username_form
+        flask.session['id'] = id
         
     else:
         print("username and password authentication fails")
+        print(password, password_form)
         flask.abort(403)
 
 
@@ -72,4 +76,5 @@ def account_logout():
     if request.method == 'GET':
         if 'username' in flask.session:
             del flask.session['username']
+            del flask.session['id']
         return redirect('/')

@@ -1,5 +1,4 @@
 import flask
-from datetime import datetime
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, redirect, jsonify
 )
@@ -15,20 +14,16 @@ def likeGene(sym):
     if body['action'] == "Like":
         cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
         cur = cnx.cursor()
-        now = datetime.now()
-        formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-        update = ("INSERT INTO favorites VALUES ('{0}', '{1}', NOW())".format('cs411', sym))
+        update = ("INSERT INTO favorites VALUES ('{0}', '{1}', NOW())".format(flask.session['id'], sym))
         try:
             cur.execute(update)
             cnx.commit()
         except:
-            pass
+            print("Failed to add to like table:",flask.session['id'], sym)
     else:
         cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
         cur = cnx.cursor()
-        now = datetime.now()
-        formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-        update = ("DELETE FROM favorites WHERE userName='{0}' AND symbol='{1}'".format('cs411', sym))
+        update = ("DELETE FROM favorites WHERE user_id='{0}' AND symbol='{1}'".format(flask.session['id'], sym))
         cur.execute(update)
         cnx.commit()
         

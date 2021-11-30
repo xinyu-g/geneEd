@@ -20,18 +20,24 @@ def showGenePage(sym):
         # single line updates are already transactions so we don't need one here
         cur.execute(update)
         cnx.commit()
-        query = ("SELECT * FROM favorites WHERE userName='{0}' AND symbol='{1}'".format('cs411', symbol))
-        cur.execute(query)
-        try:
-            results = cur.fetchall()
-        except:
-            results = []
+        results = []
+        if 'id' in session.keys():
+            query = ("SELECT * FROM favorites WHERE user_id='{0}' AND symbol='{1}'".format(session['id'], symbol))
+            cur.execute(query)
+            try:
+                results = cur.fetchall()
+            except:
+                results = []
         likeButtonText = ''
-        if len(results) > 0:
-            likeButtonText = 'Liked'
-        else:
-            likeButtonText = 'Like'
-        return render_template('gene.html', symbol=symbol, fullName=name, location=locus, popularity=popularity+1, likeButtonText=likeButtonText)
+        showLikeButton = False
+        if 'username' in session.keys():
+            showLikeButton = True
+            if len(results) > 0:
+                likeButtonText = 'Liked'
+            else:
+                likeButtonText = 'Like'
+        print('showLikeButton',showLikeButton)
+        return render_template('gene.html', symbol=symbol, fullName=name, location=locus, popularity=popularity+1, likeButtonText=likeButtonText, showLikeButton=showLikeButton)
     elif len(results) > 1:
         # TODO render a page that lets the user choose whihc one they want to view
         return "multple genes"
