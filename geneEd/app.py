@@ -2,7 +2,7 @@
 from flask import Flask, request
 from flask import render_template, session
 # from flask_wtf.csrf import CSRFProtect
-from . import search, info, login, admin, register, api
+from . import search, info, login, admin, register, api, user
 
 
 def create_app():
@@ -17,6 +17,7 @@ def create_app():
     app.register_blueprint(admin.bp)
     app.register_blueprint(register.bp)
     app.register_blueprint(api.bp)
+    app.register_blueprint(user.bp)
 
     @app.route('/', methods=('GET', 'POST'))
     def index():
