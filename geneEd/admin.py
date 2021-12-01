@@ -100,7 +100,7 @@ def visual():
     for t in cur:
         symbols.append(t[0])
         pops.append(t[2])
-    return render_template('bar.html', title='Most popular genes visualization', max=20, labels=symbols, values=pops)
+    return render_template('bar.html', title='Most popular genes visualization', max=max(pops), labels=symbols, values=pops)
 
 
 def updateGene(sym):
