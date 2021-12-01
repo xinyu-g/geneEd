@@ -31,5 +31,25 @@
                 {% endfor %}
             </table>
         </div>
+        <hr>
+        <div>
+            <h2>Recommend Genes</h2>
+            <table style='border: 1px solid black; border-collapse: collapse;'>
+                <tr>
+                    <th style="border: 1px solid black;">No.</th>
+                    <th style="border: 1px solid black;">Symbol</th>
+                    <th style="border: 1px solid black;">Full name</th>
+                    <th style="border: 1px solid black;">Popularity</th>
+                </tr>
+                {% for (sym, name, pop) in user_rcmd %}
+                    <tr>
+                        <td style="border: 1px solid black; text-align: center;"><span>{{loop.index0 + 1}}</span></td>
+                        <td style="border: 1px solid black; text-align: left"><span><a href="/info/gene/{{sym}}">{{sym}}</span></td>
+                        <td style="border: 1px solid black; width:60%"><span>{{name}}</span></td>
+                        <td style="border: 1px solid black; text-align: center;"><span>{{pop}}</span></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </body>
 </html>
