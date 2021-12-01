@@ -1,0 +1,37 @@
+<!doctype html>
+{% extends 'gene.html' %}
+
+
+{% block display %}
+
+<div class="container" id="gene-info">
+  {% for (symbol,fullName,location, popularity, geneSeq) in entries %}
+
+  <div class="result-display">
+    <h2>{{symbol}}</h2>
+    <div class="group">
+      <p>Gene Name <span>{{fullName}}</span></p>
+    </div>
+    
+    <div class="group">
+      <p>Gene Location<span>{{location}}</span></p>
+    </div>
+
+    <div class="group">
+      <p>Gene Popularity<span>{{popularity}}</span></p>
+    </div>
+
+    <div class="group">
+      <p>Gene Sequence<span>{{geneSeq[:30]}}</span></p>
+    </div>
+
+    
+  </div>
+  {% endfor %}
+  <!-- <button id="likebutton" onclick="clickLikeButton()">button</button> -->
+  {% if showLikeButton %}
+    <button id="likebutton" onclick="clickLikeButton()">{{likeButtonText}}</button>
+  {% endif %}
+</div>
+
+{% endblock %}

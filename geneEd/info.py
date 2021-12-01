@@ -21,7 +21,9 @@ def showGenePage(sym):
     #     cur.execute(query2)
     #     genes = cur.fetchall()
 
-    if len(genes) == 1:
+    if len(genes) >= 1:
+        if len(genes) > 1:
+            genes = genes[0]
         # symbol, name, locus, popularity = results[0]
         update = ("UPDATE gene SET popularity = popularity + 1 WHERE symbol = '" + sym + "'")
         # single line updates are already transactions so we don't need one here
@@ -49,8 +51,13 @@ def showGenePage(sym):
 
         return render_template('gene.html', entries=genes, likeButtonText=likeButtonText, showLikeButton=showLikeButton, symbol=sym)
 
-    elif len(genes) > 1:
-        # TODO render a page that lets the user choose whihc one they want to view
-        return "multple genes"
+    # elif len(genes) > 1:
+    #     # TODO render a page that lets the user choose whihc one they want to view
+    #     return "multple genes"
     else:
+        query2 = ("SELECT symbol,fullName,locus, popularity, sequence FROM gene WHERE symbol = '" + sym + "'")
+        cur.execute(query2)
+        res = cur.fetchall()
+        if res:
+            return render_template('gene_w0match.html', entries=res)
         return render_template('gene_not_found.html', symbol=sym)

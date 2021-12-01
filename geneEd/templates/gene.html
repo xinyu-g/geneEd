@@ -32,6 +32,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
+{% block display %}
+
 <div class="container" id="gene-info">
   {% for (symbol, fullName, protId, location, geneSeq, popularity, protName, protSeq, dname) in entries %}
 
@@ -78,7 +80,7 @@
   {% endif %}
 </div>
 
-
+{% endblock %}
 <section class="content">
   {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
