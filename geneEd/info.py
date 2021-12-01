@@ -47,7 +47,7 @@ def showGenePage(sym):
         print('showLikeButton',showLikeButton)
 #         return render_template('gene.html', symbol=symbol, fullName=name, location=locus, popularity=popularity+1, likeButtonText=likeButtonText, showLikeButton=showLikeButton)
 
-        return render_template('gene.html', entries=genes, likeButtonText=likeButtonText, showLikeButton=showLikeButton)
+        return render_template('gene.html', entries=genes, likeButtonText=likeButtonText, showLikeButton=showLikeButton, symbol=sym)
 
     elif len(genes) > 1:
         # TODO render a page that lets the user choose whihc one they want to view
