@@ -25,13 +25,14 @@
         <form method = "post" id='General-search'>
           <p>Find diseases of interests. Query its name, count of related proteins, and count of the treatments corresponding to this disease </p>
           <div class="form-group">
-            <label for="last-name">Mutation Type</label>
-            <input type="text" class="form-control" placeholder="Mutation Type (recessive, dominant, X-linked)" name='mtype' id="mtype">        
+            <label for="number">Disease Name</label>
+            <input type="text" class="form-control" placeholder="Separate multiple diseases by comma (optional)" name='dname' id="dname">
           </div>
           <div class="form-group">
-            <label for="number">Disease Name</label>
-            <input type="text" class="form-control" placeholder="Separate multiple diseases by comma" name='dname' id="dname">
+            <label for="last-name">Mutation Type</label>
+            <input type="text" class="form-control" placeholder="Mutation Type (recessive, dominant, X-linked, optional)" name='mtype' id="mtype">        
           </div>
+          
 
           <button type="submit" class="btn btn-info btn-lg btn-responsive" id="search"> <span class="glyphicon glyphicon-search"></span> Search</button>
         </form>

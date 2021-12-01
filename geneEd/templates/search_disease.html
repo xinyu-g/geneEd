@@ -1,0 +1,18 @@
+<!doctype html>
+<title>geneEd</title>
+{% extends 'search.html' %}
+
+{% block blog_usage %}
+
+<section class="container">
+    <div class="dropdown">
+      <select name="one" class="dropdown-select" onchange="location = this.value;">
+        <!-- <option value="">Category</option> -->
+        <option value="/search/genesymbol">Gene</option>
+        <option value="/search/proteins">Protein</option>
+        <option selected>Disease</option>
+      </select>
+    </div>
+  </section>
+
+{% endblock %}

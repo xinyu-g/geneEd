@@ -27,6 +27,42 @@ def searchSymbol():
     else:
         return render_template('search.html')
 
+@bp.route('/proteins', methods=('GET','POST'))
+def searchProtein():
+    if request.method == 'POST':
+        prot = request.form['query']
+        cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+        cur = cnx.cursor()
+        query = ("SELECT * FROM protein WHERE proteinId LIKE '%" + prot + "%' OR proteinName LIKE '%" + prot + "%'")
+        cur.execute(query)
+        entries = [t for t in cur]
+
+        if entries:
+            return render_template('searchresults_protein.html', entries=entries)
+
+            # return redirect('/info/gene/'.format(symbols))
+        return render_template('no_results.html',symbol=sym)
+    else:
+        return render_template('search_protein.html')
+
+@bp.route('/diseases', methods=('GET','POST'))
+def searchDisease():
+    if request.method == 'POST':
+        dname = request.form['query']
+        cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+        cur = cnx.cursor()
+        query = ("SELECT * FROM disease WHERE diseaseName LIKE '%" + dname + "%'")
+        cur.execute(query)
+        entries = [t for t in cur]
+
+        if entries:
+            return render_template('searchresults_disease.html', entries=entries)
+
+            # return redirect('/info/gene/'.format(symbols))
+        return render_template('no_results.html',symbol=sym)
+    else:
+        return render_template('search_disease.html')
+
 
 @bp.route('/advancedsearch', methods=('GET','POST'))
 def advanceSearch():

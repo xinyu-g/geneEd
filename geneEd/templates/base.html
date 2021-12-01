@@ -21,12 +21,12 @@
         <select name="one" class="dropdown-select" onchange="location = this.value;">
           <option value="">Category</option>
           <option value="/search/genesymbol">Gene</option>
-          <option value="#">Protein</option>
-          <option value="#">Disease</option>
+          <option value="/search/proteins">Protein</option>
+          <option value="/search/diseases">Disease</option>
         </select>
       </div>
     </section>
-
+    {% endblock %}
 <!-- 
     <div class="bar">
       
@@ -54,7 +54,7 @@
     
     </form>
 
-     {% endblock %}
+     
   </body>
 </center>
 </html>
