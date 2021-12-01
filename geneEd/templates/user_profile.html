@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include 'navbar.html'%}
+    </head>
+    <body>
+        <div>
+            <h1>{{username}}</h1>
+            <h4>Valued user since <em>{{create_date}}</em></h4>
+            <p>Admin Status: {{admin}}</p>
+        </div>
+        <hr>
+        <div>
+            <h2>Favorite Genes</h2>
+            <table style='border: 1px solid black; border-collapse: collapse;'>
+                <tr>
+                    <th style="border: 1px solid black;">No.</th>
+                    <th style="border: 1px solid black;">Symbol</th>
+                    <th style="border: 1px solid black;">Full name</th>
+                    <th style="border: 1px solid black;">Date Added</th>
+                    <th style="border: 1px solid black;">Popularity</th>
+                </tr>
+                {% for (sym, name, date, pop) in user_favs %}
+                    <tr>
+                        <td style="border: 1px solid black; text-align: center;"><span>{{loop.index0 + 1}}</span></td>
+                        <td style="border: 1px solid black; text-align: left"><span><a href="/info/gene/{{sym}}">{{sym}}</span></td>
+                        <td style="border: 1px solid black; width:60%"><span>{{name}}</span></td>
+                        <td style="border: 1px solid black; text-align: center;"><span>{{date}}</span></td>
+                        <td style="border: 1px solid black; text-align: center;"><span>{{pop}}</span></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <hr>
+        <div>
+            <h2>Recommend Genes</h2>
+            <table style='border: 1px solid black; border-collapse: collapse;'>
+                <tr>
+                    <th style="border: 1px solid black;">No.</th>
+                    <th style="border: 1px solid black;">Symbol</th>
+                    <th style="border: 1px solid black;">Full name</th>
+                    <th style="border: 1px solid black;">Popularity</th>
+                </tr>
+                {% for (sym, name, pop) in user_rcmd %}
+                    <tr>
+                        <td style="border: 1px solid black; text-align: center;"><span>{{loop.index0 + 1}}</span></td>
+                        <td style="border: 1px solid black; text-align: left"><span><a href="/info/gene/{{sym}}">{{sym}}</span></td>
+                        <td style="border: 1px solid black; width:60%"><span>{{name}}</span></td>
+                        <td style="border: 1px solid black; text-align: center;"><span>{{pop}}</span></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>

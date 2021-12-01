@@ -11,7 +11,7 @@
             {% if session['is_admin'] %}
                 <a class="nav-link active" aria-current="page" href="{{url_for('admin.adminPortal')}}">Dashboard</a>
             {% else %}
-                <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
+                <a class="nav-link active" aria-current="page" href="{{url_for('user.renderProfile')}}">Dashboard</a>
             {% endif %}
           </li>
         </ul>
@@ -21,7 +21,7 @@
                 <a class="nav-link active" aria-current="page" href="{{url_for ('login.account_login')}}">Log In</a>
               </li>
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{url_for ('register.register')}}">Sign In</a>
+                <a class="nav-link active" aria-current="page" href="{{url_for ('register.register')}}">Sign Up</a>
             </li>
             {% else %}
             <li class="nav-item">
