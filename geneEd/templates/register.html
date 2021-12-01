@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<head>
+  {% include 'navbar.html' %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
 <html lang="en">
   <head>
     <title>Register</title>
@@ -12,12 +16,12 @@
       enctype="multipart/form-data"
     >
       <div class="username-container">
-        <label for="username" class=""> User Name </label>
+        <label for="username" class=""> User Name: </label>
         <input type="text" name="username" placeholder="Username" required />
       </div>
-
+      <br>
       <div class="password-container">
-        <label for="password" class=""> Password </label>
+        <label for="password" class=""> Password: </label>
         <input
           id="passwd"
           type="password"
@@ -26,10 +30,11 @@
           required
         />
       </div>
-
+      <br>
       <button class="button" type="submit" , value="register">Sign Up</button>
     </form>
-    <div class="msg">{{msg}}</div>
-    <a href="{{url_for ('login.account_login')}}"><b>Log In</b></a>
+    <div class="msg" style="color:red;">{{msg}}</div>
   </body>
+
+  
 </html>
