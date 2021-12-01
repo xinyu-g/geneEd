@@ -46,6 +46,7 @@ def login(connection):
         print("login success")
         flask.session['username'] = username_form
         flask.session['id'] = id
+        flask.session['is_admin'] = user[5]
         
     else:
         print("username and password authentication fails")
