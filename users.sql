@@ -55,7 +55,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `favorites`;
 CREATE TABLE favorites(
-    `user_id` INT PRIMARY KEY,
+    `user_id` INT,
     `symbol` VARCHAR(8),
     `createDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
