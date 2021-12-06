@@ -18,6 +18,16 @@ begin
         from gene join protein using (proteinId)
         group by proteinId
         having avg(popularity) > 5
+        union
+        -- pick genes that other users liked
+        select symbol from (
+            select symbol, count(userName) as numLikes
+            from favorites
+            where symbol = fav_symbol
+            group by symbol
+            order by numLikes
+            limit 3
+        )
     );
     declare continue handler for not found set done = 1;
     open genecur;
