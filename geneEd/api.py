@@ -10,7 +10,6 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 @bp.route('/like/<sym>', methods=['POST'])
 def likeGene(sym):
     body = request.json
-    print(body)
     if body['action'] == "Like":
         cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
         cur = cnx.cursor()
@@ -18,8 +17,9 @@ def likeGene(sym):
         try:
             cur.execute(update)
             cnx.commit()
-        except:
-            print("Failed to add to like table:",flask.session['id'], sym)
+            print('User {0} liked gene {1}'.format(flask.session['id'], sym))
+        except Exception as e:
+            print("Failed to add to like table: {}".format(e),flask.session['id'], sym)
     else:
         cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
         cur = cnx.cursor()
