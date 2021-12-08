@@ -22,16 +22,6 @@ begin
         from gene join protein using (proteinId)
         group by proteinId
         having avg(popularity) > 5
-        union
-        -- pick genes that other users liked
-        select symbol from (
-            select symbol, count(user_id) as numLikes
-            from favorites
-            where symbol = fav_symbol
-            group by symbol
-            order by numLikes
-            limit 3
-        ) as t1
     );
 
     declare favcur cursor for (
