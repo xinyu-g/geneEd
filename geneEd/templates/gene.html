@@ -1,18 +1,90 @@
 <!doctype html>
-<title>geneEd</title>
+<head>
+  {% include 'navbar.html' %}
+</head>
+<script>
+  function clickLikeButton() {
+    var btnText = document.getElementById('likebutton').innerHTML;
+    var data = {}
+    var successText = ''
+    if(btnText == 'Like') {
+      //document.getElementById('likebutton').innerHTML = 'Liked';
+      var data = {symbol: "{{symbol}}", action: "Like"}
+      successText = 'Liked'
+    } else {
+      //document.getElementById('likebutton').innerHTML = 'Like';
+      var data = {symbol: "{{symbol}}", action: "Unlike"}
+      successText = 'Like'
+    }
+    fetch("/api/like/{{symbol}}", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    }).then(res => {
+      document.getElementById('likebutton').innerHTML = successText;
+      console.log(res);
+    });
+  }
+</script>
 
-{% block header %}
-  <h1>{{symbol}}</h1>
-  <h3>{{fullName}}</h3>
-  <p>{{location}}</p>
-  <p>{{popularity}}</p>
+<head>
+  <title>geneEd</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+{% block display %}
+
+<div class="container" id="gene-info">
+  {% for symbol, fullName, protId, location, geneSeq, popularity, protName, protSeq, dname in entries %}
+
+  <div class="result-display">
+    <h2>{{symbol}}</h2>
+    <div class="group">
+      <p>Gene Name <span>{{fullName}}</span></p>
+    </div>
+    
+    <div class="group">
+      <p>Gene Location<span>{{location}}</span></p>
+    </div>
+
+    <div class="group">
+      <p>Gene Popularity<span>{{popularity}}</span></p>
+    </div>
+
+    <div class="group">
+      <p>Gene Sequence<span>{{geneSeq[:30]}}</span></p>
+    </div>
+
+    <div class="group">
+      <p>Protein Id<span>{{protId}}</span></p>
+    </div>
+
+    <div class="group">
+      <p>Protein Name<span>{{protName}}</span></p>
+    </div>
+
+    <div class="group">
+      <p>Protein Sequence<span>{{protSeq[:30]}}</span></p>
+    </div>
+
+
+    <div class="group">
+      <p>Disease<span>{{dname[2:-2]}}</span></p>
+    </div>
+    
+  </div>
+  {% endfor %}
+  <!-- <button id="likebutton" onclick="clickLikeButton()">button</button> -->
+  {% if showLikeButton %}
+    <button id="likebutton" onclick="clickLikeButton()">{{likeButtonText}}</button>
+  {% endif %}
+</div>
+
 {% endblock %}
-
 <section class="content">
   {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
   {% endfor %}
-  {% block content %}
+
   
-  {% endblock %}
 </section>

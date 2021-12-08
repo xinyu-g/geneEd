@@ -1,8 +1,8 @@
-
 <!doctype html>
 <head>
   <title></title>
   <link rel="stylesheet" href="{{ url_for('static', filename='search_result.css') }}">
+  {% include 'navbar.html' %}
 </head>
 
 <body class="hm-gradient">
@@ -10,16 +10,11 @@
 
   {% block table %}
     <section>
-        <!--for demo wrap-->
         <form method = "post">
             <div class="bar">
             
                 <input class="searchbar" type="text" title="Search" name="query" id="query">
-                <!-- <label for="login" class="login">
-                  <i class="material-icons">person</i>
-                  
-                <input type="text" name="username" placeholder="Username" required/>
-              </label> -->
+
                 <button type="submit", value='Search'>
                   <i class="material-icons">search</i>
                   
@@ -28,10 +23,7 @@
               </div>
         </form>
         
-      <!--   <div class="buttons">
-          <button class="button" type="submit" value='Search'>Search</button>
-          <button class="button" type="button">I'm Feeling Lucky</button>
-         </div> -->
+
         <div class="tbl-header">
           <table cellpadding="0" cellspacing="0" border="0">
             <thead>
@@ -49,7 +41,20 @@
             <tbody>
                 {% for (sym, name, _, prot, loc, seq, pop) in entries %}
                 <tr>
-                    <td>{{sym}}</td>
+
+                  
+                    <td>
+                      
+                      <a href="/info/gene/{{sym}}">
+                        {{sym}}
+                      </a>
+                      <!-- <a href="http://example.com">
+                        <div style="height:100%;width:100%">
+                          hello world
+                        </div>
+                      </a> -->
+                    </td>
+
                     <td>{{name}}</td>
                     <td>{{seq[:15]}}</td>
                     <td>{{loc}}</td>
@@ -64,10 +69,3 @@
   {% endblock %}
   
 </body>
-
-
-
-
-
-
-  

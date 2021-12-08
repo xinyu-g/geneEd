@@ -1,13 +1,26 @@
+import flask
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, redirect
 )
 import mysql.connector
 
 
+def check_access():
+    if 'username' not in session: flask.abort(403)
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cursor = cnx.cursor()
+    cursor.execute("SELECT * FROM users WHERE username='" + session['username'] + "'")
+    user = cursor.fetchone()
+    is_admin = user[5]
+    if not is_admin: flask.abort(403)
+
+
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-@bp.route('/portal', methods=('GET','POST'))
+
+@bp.route('/portal', methods=('GET', 'POST'))
 def adminPortal():
+    check_access()
     if request.method == 'POST':
         sym = request.form['query']
         action = request.form['action']
@@ -17,7 +30,7 @@ def adminPortal():
             return updateGene(sym)
         elif action == 'delete':
             return deleteGene(sym)
-            
+
     else:
         cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
         query = ("SELECT symbol, fullName, popularity FROM gene ORDER BY popularity DESC, symbol LIMIT 10")
@@ -26,21 +39,27 @@ def adminPortal():
         top10 = [t for t in cur]
         return render_template('adminportal.html', top10=top10)
 
+
 @bp.route('/updategene/<sym>', methods=['POST'])
 def updateGeneDatabase(sym):
+    check_access()
     name = request.form['fullName']
     locus = request.form['locus']
     popularity = request.form['popularity']
     print(popularity)
     cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
-    update = ("UPDATE gene SET fullName='{0}', locus='{1}', popularity={2} WHERE symbol='{3}'".format(name, locus, popularity, sym))
+    update = (
+        "UPDATE gene SET fullName='{0}', locus='{1}', popularity={2} WHERE symbol='{3}'".format(name, locus, popularity,
+                                                                                                sym))
     cur = cnx.cursor()
     cur.execute(update)
     cnx.commit()
     return redirect('/info/gene/{0}'.format(sym))
 
+
 @bp.route('/newentry', methods=["POST"])
 def createNewEntry():
+    check_access()
     symbol = request.form['symbol']
     fullName = request.form['fullName']
     proteinId = request.form['proteinId']
@@ -58,13 +77,30 @@ def createNewEntry():
     # silently insert new genes, show old one if it exists
     if len(results) == 0:
         stmt1 = ("INSERT INTO disease VALUES ('{0}', '{1}')".format(diseaseName, mutationType))
-        stmt2 = ("INSERT INTO protein VALUES ('{0}', '{1}', '{2}', '{3}')".format(proteinId, proteinName, diseaseName, proteinSequence))
-        stmt3 = ("INSERT INTO gene VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6})".format(symbol, fullName, proteinId, proteinName, locus, geneSequence, 0))
+        stmt2 = ("INSERT INTO protein VALUES ('{0}', '{1}', '{2}', '{3}')".format(proteinId, proteinName, diseaseName,
+                                                                                  proteinSequence))
+        stmt3 = ("INSERT INTO gene VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6})".format(symbol, fullName,
+                                                                                                  proteinId,
+                                                                                                  proteinName, locus,
+                                                                                                  geneSequence, 0))
         cur.execute(stmt1)
         cur.execute(stmt2)
         cur.execute(stmt3)
         cnx.commit()
     return redirect("/info/gene/{0}".format(symbol))
+
+@bp.route('/visual', methods=["GET"])
+def visual():
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    query = ("SELECT symbol, fullName, popularity FROM gene ORDER BY popularity DESC, symbol LIMIT 10")
+    cur = cnx.cursor()
+    cur.execute(query)
+    symbols = []
+    pops = []
+    for t in cur:
+        symbols.append(t[0])
+        pops.append(t[2])
+    return render_template('bar.html', title='Most popular genes visualization', max=max(pops), labels=symbols, values=pops)
 
 
 def updateGene(sym):
@@ -78,12 +114,15 @@ def updateGene(sym):
         symbol, name, locus, popularity = items[0]
         return render_template('updategene.html', symbol=symbol, name=name, locus=locus, popularity=popularity)
     else:
-        return render_template('no_results.html',symbol=sym)
+        return render_template('no_results.html', symbol=sym)
+
 
 def deleteGene(sym):
     cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
     cur = cnx.cursor()
-    stmt0 = ("SELECT symbol, protein.proteinId, disease.diseaseName FROM (gene JOIN protein ON gene.proteinId=protein.proteinId) JOIN disease ON protein.diseaseName=disease.diseaseName WHERE symbol='{0}'".format(sym))
+    stmt0 = (
+        "SELECT symbol, protein.proteinId, disease.diseaseName FROM (gene JOIN protein ON gene.proteinId=protein.proteinId) JOIN disease ON protein.diseaseName=disease.diseaseName WHERE symbol='{0}'".format(
+            sym))
     cur.execute(stmt0)
     results = cur.fetchall()
     for (sym, proteinId, diseaseName) in results:
