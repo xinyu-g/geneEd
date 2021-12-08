@@ -51,7 +51,7 @@ def searchDisease():
         dname = request.form['query']
         cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
         cur = cnx.cursor()
-        query = ("SELECT * FROM disease WHERE diseaseName LIKE '%" + dname + "%'")
+        query = ("SELECT symbol, protein.proteinId, disease.diseaseName, mutationType FROM disease JOIN protein JOIN gene WHERE disease.diseaseName = protein.diseaseName AND gene.proteinId = protein.proteinId AND disease.diseaseName LIKE '%" + dname + "%'")
         cur.execute(query)
         entries = [t for t in cur]
 
@@ -59,7 +59,7 @@ def searchDisease():
             return render_template('searchresults_disease.html', entries=entries)
 
             # return redirect('/info/gene/'.format(symbols))
-        return render_template('no_results.html',symbol=sym)
+        return render_template('no_results.html',symbol=dname)
     else:
         return render_template('search_disease.html')
 
