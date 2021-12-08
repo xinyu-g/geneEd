@@ -13,7 +13,7 @@ bp = Blueprint('search', __name__, url_prefix='/search')
 def searchSymbol():
     if request.method == 'POST':
         sym = request.form['query']
-        cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+        cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
         cur = cnx.cursor()
         query = ("SELECT * FROM gene WHERE symbol LIKE '%" + sym + "%'")
         cur.execute(query)
@@ -31,7 +31,7 @@ def searchSymbol():
 def searchProtein():
     if request.method == 'POST':
         prot = request.form['query']
-        cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+        cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
         cur = cnx.cursor()
         query = ("SELECT * FROM protein WHERE proteinId LIKE '%" + prot + "%' OR proteinName LIKE '%" + prot + "%'")
         cur.execute(query)
@@ -49,7 +49,7 @@ def searchProtein():
 def searchDisease():
     if request.method == 'POST':
         dname = request.form['query']
-        cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+        cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
         cur = cnx.cursor()
         query = ("SELECT * FROM disease WHERE diseaseName LIKE '%" + dname + "%'")
         cur.execute(query)
@@ -69,14 +69,14 @@ def advanceSearch():
 
     if request.method == 'POST':
       
-        gseq = request.form.get['gseq']
-        mtype = request.form.get['mtype']
-        gloc = request.form.get['gloc']
-        pseq = request.form.get['pseq']
-        dname = request.form.get['dname']
-        tname = request.form.get['tname']
-        tloc = request.form.get['tloc']
-        cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+        gseq = request.form.get('gseq')
+        mtype = request.form.get('mtype')
+        gloc = request.form.get('gloc')
+        pseq = request.form.get('pseq')
+        dname = request.form.get('dname')
+        tname = request.form.get('tname')
+        tloc = request.form.get('tloc')
+        cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
         cur = cnx.cursor()
         query = ("SELECT * FROM gene WHERE symbol LIKE '%" + sym + "%'")
 
@@ -92,7 +92,7 @@ def advanceSearch2():
         mtype = request.form.get('mtype')
         print(gseq, file=sys.stderr)
         print(mtype, file=sys.stderr)
-        cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+        cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
         cur = cnx.cursor()
         lst = []
         if gseq and mtype:
@@ -137,7 +137,7 @@ def advanceSearch3():
  
         dname = request.form.get('dname')
         mtype = request.form.get('mtype')
-        cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+        cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
         cur = cnx.cursor()
         lst = []
         if dname and mtype:

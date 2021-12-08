@@ -2,10 +2,9 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for, redirect
 )
 import flask
-import geneEd
 import mysql
 import mysql.connector
-
+import logging
 
 def get_from_form(name):
     """Get form['name']."""
@@ -32,7 +31,7 @@ def login(connection):
         print("the username or password fields are empty")
         flask.abort(400)
 
-    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
     cursor = cnx.cursor()
     cursor.execute("SELECT * FROM users WHERE username='" + username_form + "'")
     user = cursor.fetchone()
@@ -47,6 +46,7 @@ def login(connection):
         flask.session['username'] = username_form
         flask.session['id'] = id
         flask.session['is_admin'] = user[5]
+        logging.info(flask.session)
         
     else:
         print("username and password authentication fails")
@@ -65,8 +65,7 @@ def account_login():
     else:
         operation = get_from_form('operation')
         target = get_target()
-        connection = mysql.connector.connect(user='root', passwd='root', database='geneEd')
-
+        connection = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
         if operation == 'login':
             login(connection)
 

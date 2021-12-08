@@ -7,7 +7,7 @@ import mysql.connector
 
 def check_access():
     if 'username' not in session: flask.abort(403)
-    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
     cursor = cnx.cursor()
     cursor.execute("SELECT * FROM users WHERE username='" + session['username'] + "'")
     user = cursor.fetchone()
@@ -32,7 +32,7 @@ def adminPortal():
             return deleteGene(sym)
 
     else:
-        cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+        cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
         query = ("SELECT symbol, fullName, popularity FROM gene ORDER BY popularity DESC, symbol LIMIT 10")
         cur = cnx.cursor()
         cur.execute(query)
@@ -47,7 +47,7 @@ def updateGeneDatabase(sym):
     locus = request.form['locus']
     popularity = request.form['popularity']
     print(popularity)
-    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
     update = (
         "UPDATE gene SET fullName='{0}', locus='{1}', popularity={2} WHERE symbol='{3}'".format(name, locus, popularity,
                                                                                                 sym))
@@ -69,7 +69,7 @@ def createNewEntry():
     diseaseName = request.form['diseaseName']
     proteinSequence = request.form['proteinSequence']
     mutationType = request.form['mutationType']
-    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
     cur = cnx.cursor()
     stmt0 = ("SELECT symbol FROM gene WHERE symbol='{0}'".format(symbol))
     cur.execute(stmt0)
@@ -91,7 +91,7 @@ def createNewEntry():
 
 @bp.route('/visual', methods=["GET"])
 def visual():
-    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
     query = ("SELECT symbol, fullName, popularity FROM gene ORDER BY popularity DESC, symbol LIMIT 10")
     cur = cnx.cursor()
     cur.execute(query)
@@ -104,7 +104,7 @@ def visual():
 
 
 def updateGene(sym):
-    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
     cur = cnx.cursor()
     query = ("SELECT symbol, fullName, locus, popularity FROM gene WHERE symbol = '" + sym + "'")
     cur.execute(query)
@@ -118,7 +118,7 @@ def updateGene(sym):
 
 
 def deleteGene(sym):
-    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
     cur = cnx.cursor()
     stmt0 = (
         "SELECT symbol, protein.proteinId, disease.diseaseName FROM (gene JOIN protein ON gene.proteinId=protein.proteinId) JOIN disease ON protein.diseaseName=disease.diseaseName WHERE symbol='{0}'".format(

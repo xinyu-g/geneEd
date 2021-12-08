@@ -13,7 +13,7 @@ def renderProfile():
     
     user_id = flask.session['id']
 
-    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
     cur = cnx.cursor()
     query1 = ("SELECT username, create_time, is_admin FROM users WHERE id = {0}".format(user_id))
     query2 = ("SELECT DISTINCT symbol, fullName, createDate, popularity FROM users NATURAL JOIN favorites NATURAL JOIN gene WHERE user_id = {0}".format(user_id))

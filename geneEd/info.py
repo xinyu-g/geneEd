@@ -8,7 +8,7 @@ bp = Blueprint('info', __name__, url_prefix='/info')
 
 @bp.route('/gene/<sym>')
 def showGenePage(sym):
-    cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
+    cnx = mysql.connector.connect(user='root', passwd='root', database='geneed', host='104.155.175.84')
     cur = cnx.cursor()
     # symbol,fullName,locus, popularity
     query = ("""SELECT symbol, fullName, proteinId, locus, G.sequence, popularity, P.proteinName, P.sequence, diseaseName 

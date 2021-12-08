@@ -2,7 +2,7 @@
 from flask import Flask, request
 from flask import render_template, session
 # from flask_wtf.csrf import CSRFProtect
-from . import search, info, login, admin, register, api, user
+import search, info, login, admin, register, api, user
 
 
 def create_app():
@@ -10,7 +10,7 @@ def create_app():
     # app.secret_key = 'very secret'
     # CSRFProtect(app)
 
-    app.config.from_object('geneEd.config')
+    app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
     app.register_blueprint(search.bp)
     app.register_blueprint(info.bp)
     app.register_blueprint(login.bp)
@@ -31,3 +31,4 @@ def create_app():
         return render_template('base.html')
 
     return app
+app = create_app()
