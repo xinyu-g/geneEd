@@ -33,7 +33,7 @@ def searchProtein():
         prot = request.form['query']
         cnx = mysql.connector.connect(user='root', passwd='root', database='geneEd')
         cur = cnx.cursor()
-        query = ("SELECT * FROM protein WHERE proteinId LIKE '%" + prot + "%' OR proteinName LIKE '%" + prot + "%'")
+        query = ("SELECT symbol, protein.proteinId, protein.proteinName, protein.sequence FROM protein JOIN gene WHERE protein.proteinId = gene.proteinId AND (protein.proteinId LIKE '%" + prot + "%' OR protein.proteinName LIKE '%" + prot + "%')")
         cur.execute(query)
         entries = [t for t in cur]
 
@@ -41,7 +41,7 @@ def searchProtein():
             return render_template('searchresults_protein.html', entries=entries)
 
             # return redirect('/info/gene/'.format(symbols))
-        return render_template('no_results.html',symbol=sym)
+        return render_template('no_results.html',symbol=prot)
     else:
         return render_template('search_protein.html')
 
