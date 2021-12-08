@@ -30,7 +30,7 @@ begin
 		end if;
 		until done
 	end repeat;
-    close genecur;
+    close genecur;       
 end$$
 DELIMITER ;
 

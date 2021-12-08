@@ -23,7 +23,7 @@ def showGenePage(sym):
 
     if len(genes) >= 1:
         if len(genes) > 1:
-            genes = genes[:1]
+            genes = genes[0]
         # symbol, name, locus, popularity = results[0]
         update = ("UPDATE gene SET popularity = popularity + 1 WHERE symbol = '" + sym + "'")
         # single line updates are already transactions so we don't need one here
@@ -48,7 +48,7 @@ def showGenePage(sym):
                 likeButtonText = 'Like'
         print('showLikeButton',showLikeButton)
 #         return render_template('gene.html', symbol=symbol, fullName=name, location=locus, popularity=popularity+1, likeButtonText=likeButtonText, showLikeButton=showLikeButton)
-        return render_template('gene.html', entries=genes, likeButtonText=likeButtonText, showLikeButton=showLikeButton, symbol=sym)
+        return render_template('gene.html', entries=genes, likeButtonText=likeButtonText, showLikeButton=showLikeButton)
 
     # elif len(genes) > 1:
     #     # TODO render a page that lets the user choose whihc one they want to view
