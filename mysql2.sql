@@ -1,4 +1,5 @@
-DROP PROCEDURE IF EXISTS updateRecommend;
+use geneed;
+drop procedure if exists updateRecommend;
 DELIMITER $$
 create procedure updateRecommend(
 	user_id int,
@@ -32,3 +33,24 @@ begin
     close genecur;
 end$$
 DELIMITER ;
+
+drop trigger if exists afterLike;
+DELIMITER $$
+create trigger afterLike
+after insert on favorites
+for each row
+begin
+	set @is_admin = (
+		select is_admin from users
+		where id = new.user_id
+	);
+    if @is_admin != 1 or @is_admin is null then
+		delete from recommend
+        where user_id = new.user_id;
+        call updateRecommend(
+			new.user_id,
+            new.symbol
+        );
+	end if;
+end$$    
+DELIMITER ; 
